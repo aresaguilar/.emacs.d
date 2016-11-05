@@ -1,0 +1,733 @@
+#+TITLE: Ares' Emacs Configuration
+#+OPTIONS: toc:4 h:4
+#+STARTUP: contents
+
+* Configuration
+** About this file
+   :PROPERTIES:
+   :CUSTOM_ID: babel-init
+   :END:
+<<babel-init>>
+
+This is my personal configuration in a literate programming style.
+This file gets tangled with the command =M-x org-babel-tangle= (=C-c C-v t=).
+
+** Prerequisites
+
+Following packages must be installed in your emacs:
+
+    - use-package
+    - helm
+    - monokai-theme
+    - auto-complete
+    - ecb
+    - yasnippet
+    - clipmon
+
+** Starting up
+
+Everything that should be loaded at startup is here.
+Changes to env variables should be done here.
+
+#+begin_src emacs-lisp :tangle yes
+(package-initialize)
+(setq package-enable-at-startup nil)
+(setq custom-file "~/.emacs.d/custom-settings.el")
+(load custom-file t)
+(unless (assoc-default "melpa" package-archives)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (package-refresh-contents)
+)
+(setq inhibit-startup-screen t)
+#+END_SRC
+
+** Personal information
+
+My name, email and other personal information.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq user-full-name "Ares Aguilar"
+      user-mail-address "aresaguilarsotos@gmail.com")
+#+END_SRC
+
+** General configuration
+*** Backups
+
+By default, Emacs saves backup files in the same directory as the file.
+The following code stashes them all in =~/.emacs.d/backups=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+#+END_SRC
+
+Same with auto backup files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
+#+END_SRC
+
+*** History
+
+This section is about session persistence. It saves the following:
+ - Minibuffer
+ - Kill Ring
+ - Search Ring
+ - Regexp Search Ring
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq savehist-file "~/.emacs.d/savehist")
+(savehist-mode 1)
+(setq history-length t)
+(setq history-delete-duplicates t)
+(setq savehist-save-minibuffer-history 1)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+#+END_SRC
+
+*** Helm
+
+=Helm= is an incremental completion and selection narrowing framework for Emacs.
+Instead of autocompleting, narrows all possibilities by regexes.
+I replace the following emacs commands with helm equivalents:
+    - M-x
+    - C-x C-f
+    - M-y
+    - C-h a
+    - C-x C-b
+    - C-x c o
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package helm
+    :diminish helm-mode
+    :init
+    (progn
+      (require 'helm-config)
+      (require 'helm)
+      (global-set-key (kbd "C-c h") 'helm-command-prefix)
+      (global-unset-key (kbd "C-x c"))
+      (setq helm-candidate-number-limit 100)
+      (setq helm-idle-delay 0.0
+            helm-input-idle-delay 0.01
+            helm-yas-display-key-on-candidate t
+            helm-quick-update t
+            helm-M-x-requires-pattern nil
+            helm-ff-skip-boring-files t
+            helm-split-window-in-side-p t
+            helm-display-header-line nil
+            helm-autoresize-max-height 30
+            helm-autoresize-min-height 30)
+      (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+      (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+      (define-key helm-map (kbd "C-z")  'helm-select-action)
+      (set-face-attribute 'helm-source-header nil :height 0.1)
+      (helm-mode))
+    :bind (("C-x b" . helm-mini)
+           ("C-h a" . helm-apropos)
+           ("C-x C-b" . helm-buffers-list)
+           ("M-y" . helm-show-kill-ring)
+           ("M-x" . helm-M-x)
+           ("C-x c o" . helm-occur)
+           ("C-x C-f" . helm-find-files)))
+#+END_SRC
+
+*** Change "yes or no" to "y or n"
+
+Lazy people like me never want to type "yes" when "y" will suffice.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(fset 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+*** Undo tree mode
+
+People often struggle with the Emacs undo model, where there's really no concept of "redo" - you simply undo the undo.
+This lets you use =C-x u= (=undo-tree-visualize=) to visually walk through the changes you've made,
+undo back to a certain point (or redo), and go down different branches.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package undo-tree
+  :diminish undo-tree-mode
+  :config
+  (progn
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)))
+#+END_SRC
+
+*** Guide-key
+
+It's hard to remember keyboard shortcuts. The =guide-key= package pops up help after a short delay.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package guide-key
+  :defer t
+  :diminish guide-key-mode
+  :config
+  (progn
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c"))
+  (guide-key-mode 1)))  ; Enable guide-key-mode
+#+END_SRC
+
+** Interface customization
+*** Frames
+
+I like to have as much screen space as possible.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+#+END_SRC
+
+*** Windows
+
+I don't like scrollbars.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(scroll-bar-mode -1)
+#+END_SRC
+
+*** Modeline
+
+Display a more compact mode line.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package smart-mode-line)
+#+END_SRC
+
+*** Theme
+
+Best theme in Emacs
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (load-theme 'monokai t)
+#+END_SRC
+
+** Editing text
+*** Encoding
+
+I always use UTF-8, so lets let Emacs know.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(prefer-coding-system 'utf-8)
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+#+END_SRC
+
+*** Killing
+
+=C-k= kills a line if none selected.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defadvice kill-region (before slick-cut activate compile)
+  "When called interactively with no active region, kill a single line instead."
+  (interactive
+    (if mark-active (list (region-beginning) (region-end))
+      (list (line-beginning-position)
+        (line-beginning-position 2)))))
+#+END_SRC
+
+*** Expand region
+
+This is something I have to get the hang of too. It gradually expands the selection.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package expand-region
+    :defer t
+    :bind ("C-=" . er/expand-region))
+#+end_src
+
+*** TODO Multiple cursors
+** Navigation
+*** Window movement
+
+I like using =S-<arrow>= to move between windows...
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(windmove-default-keybindings)
+#+END_SRC
+
+... but ORG doesn't.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
+#+END_SRC
+
+*** TODO Key chords
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+#+END_SRC
+
+*** Smart scan
+
+This makes =M-n= and =M-p= look for the symbol at point.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package smartscan
+  :defer t
+  :config (global-smartscan-mode t))
+#+END_SRC
+
+*** Move to beginning of line
+Copied from http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun my/smarter-move-beginning-of-line (arg)
+  "Move point back to indentation of beginning of line.
+
+Move point to the first non-whitespace character on this line.
+If point is already there, move to the beginning of the line.
+Effectively toggle between the first non-whitespace character and
+the beginning of the line.
+
+If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+point reaches the beginning or end of the buffer, stop there."
+  (interactive "^p")
+  (setq arg (or arg 1))
+
+  ;; Move lines first
+  (when (/= arg 1)
+    (let ((line-move-visual nil))
+      (forward-line (1- arg))))
+
+  (let ((orig-point (point)))
+    (back-to-indentation)
+    (when (= orig-point (point))
+      (move-beginning-of-line 1))))
+
+;; remap C-a to `smarter-move-beginning-of-line'
+(global-set-key [remap move-beginning-of-line]
+                'my/smarter-move-beginning-of-line)
+#+END_SRC
+
+** File management
+
+I use dired as my file manager, but its interface is very cluttered.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+(setq-default dired-omit-files-p t)
+(setq diredp-hide-details-initially-flag t)
+(setq diredp-hide-details-propagate-flag t)
+#+END_SRC
+
+And I like to go up one level using =^=
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(define-key key-translation-map [dead-circumflex] "^")
+#+END_SRC
+
+** Web Browser
+
+I know emacs has eww, but I love w3m.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq browse-url-browser-function 'w3m-browse-url)
+#+END_SRC
+
+** ORG mode
+
+I use [[http://www.orgmode.org][Org Mode]] to take notes, record my life, save
+my recipes, write this file and all sort of stuff.
+
+*** My files
+    :PROPERTIES:
+    :CUSTOM_ID: org-files
+    :END:
+
+#<<org-files>>
+
+Here are the Org files I use.
+
+| ARES.org    | Main ORG file. Here I have my notes, tasks, finances and other stuff. |
+| cocina.org  | Recipes and shopping list.                                            |
+| magia.org   | Magic tricks and ideas.                                               |
+| notas.org   | Unclassified notes.                                                   |
+| trabajo.org | Work-related stuff.                                                   |
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq org-directory "~/ORG")
+  (setq org-default-notes-file "~/ORG/notas.org")
+#+END_SRC
+
+*** General configuration
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(require 'auto-complete-config)
+;; Make auto-complete work in org
+(add-to-list 'ac-modes 'org-mode)
+;; Variables
+(custom-set-variables
+ ;; Agenda files
+ '(org-agenda-files (quote ("~/ORG/ARES.org" "~/ORG/trabajo.org")))
+ ;; Number of consecutive days in agenda
+ '(org-agenda-ndays 7)
+ ;; Number of days to warn for deadlines
+ '(org-deadline-warning-days 5)
+ ;; Show all days in agenda, even without tasks
+ '(org-agenda-show-all-dates t)
+ ;; Don't warn deadlines if done
+ '(org-agenda-skip-deadline-if-done t)
+ ;; Don't show scheduled if done
+ '(org-agenda-skip-scheduled-if-done t)
+ ;; Show newest notes at top
+ '(org-reverse-note-order t)
+ ;; Do not use S-<arrow> (used in windmove)
+ '(org-replace-disputed-keys t)
+ )
+#+END_SRC
+
+*** Cook mode
+
+Template for saving my recipes.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; source: http://lebensverrueckt.haktar.org/articles/org-mode-Food/
+(defun food/gen-shopping-list ()
+  "Generate shopping list from COCINAR items."
+  (interactive)
+  (goto-line 0)
+  (let ((start-shopping-list (search-forward "* COMPRA" nil t)))
+    (while (search-forward "** COCINAR" nil t)
+      (show-subtree)
+      (outline-next-visible-heading 1)
+      (next-line)
+      (let ((start (point)))
+        (outline-next-visible-heading 1)
+        ;;(previous-line)
+        (copy-region-as-kill start (point)))
+      (save-excursion
+        (goto-char start-shopping-list)
+        (newline)
+        (yank)
+        (show-subtree)
+        (delete-blank-lines)))
+    (goto-char start-shopping-list)
+    (next-line)
+    (org-table-goto-column 2)
+    (org-table-sort-lines nil ?a)
+    (goto-char start-shopping-list)
+    (org-mark-subtree)
+    (next-line)
+    (flush-blank-lines))
+  (org-table-align)
+  (previous-line)
+  (org-shifttab))
+(defun food/clear-shopping-list ()
+  "Clear everything in the shopping list."
+  (interactive)
+  (save-excursion
+    (goto-line 0)
+    (let ((start-shopping-list (search-forward "* COMPRA" nil t)))
+      (show-subtree)
+      (outline-next-visible-heading 1)
+      (previous-line)
+      (end-of-line)
+      (kill-region start-shopping-list (point)))))
+;; RECIPE template
+(defun recipe-template ()
+  "Create new recipe and add it to RECIPES list."
+  (interactive)
+  (goto-line 0)
+  (search-forward "* RECETAS")
+  (org-meta-return)
+  (org-metaright)
+  (setq recipe-name (read-string "Nombre: "))
+  (insert recipe-name)
+  (org-set-tags)
+  (org-meta-return)
+  (org-metaright)
+  (insert "Ingredientes")
+  (org-meta-return)
+  (insert "Preparación")
+  (search-backward recipe-name)
+  (setq source (read-string "Fuente: "))
+  (org-set-property "Fuente" source)
+  (setq amount (read-string "Cantidad: "))
+  (org-set-property "Cantidad" amount)
+  )
+#+END_SRC
+
+*** Work mode
+
+Another template, this time for saving a ticket.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun ticket-template ()
+  "Create new ticket and add it to TICKETS list."
+  (interactive)
+  (goto-line 0)
+  (search-forward "* TICKETS")
+  (setq ticket-number (read-string "Ticket (num): "))
+  (save-excursion
+    (goto-line 0)
+    (unless (eq (how-many (concat ":TICKET:[[:blank:]]+" ticket-number)) 0)
+      (setq ticket-number (read-string "YA EXISTE. Otro?: "))
+      ))
+  (org-meta-return)
+  (org-metaright)
+  (setq ticket-name (read-string "Ticket (desc): "))
+  (insert (concat
+           "[[https://10.0.1.151:3001/issues/"
+           ticket-number
+           "]["
+           ticket-name
+           "]]"))
+  (org-shiftright)
+  (org-set-property "TICKET" ticket-number)
+  (org-set-property "DEADLINE" "123")
+  (org-set-tags)
+  )
+#+END_SRC
+
+** Coding
+*** General
+
+I don't like tabs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default tab-width 4)
+#+END_SRC
+
+I don't like to type closing parens.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (electric-pair-mode 1)
+  (show-paren-mode 1)
+  (setq show-paren-delay 0)
+#+END_SRC
+
+But I do love to know where I am.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (column-number-mode 1)
+#+END_SRC
+
+*** CTAGS
+
+Etags allow to visit a symbol's definition using =M-.=
+Tags must be created first, using the following function.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq path-to-ctags "ctags")
+(defun create-tags (dir-name)
+  "Create tags file"
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "%s -f TAGS -e -R %s" path-to-ctags (directory-file-name dir-name))))
+#+END_SRC
+
+*** TODO Projectile
+
+Projectile configuration.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package projectile
+    :diminish projectile-mode
+    :config
+    (progn
+      (setq projectile-keymap-prefix (kbd "C-c p"))
+      (setq projectile-completion-system 'default)
+      (setq projectile-enable-caching t)
+      (setq projectile-indexing-method 'alien)
+      (add-to-list 'projectile-globally-ignored-files "node-modules"))
+    :config
+    (projectile-global-mode))
+  (use-package helm-projectile)
+#+END_SRC
+
+*** ECB
+
+ECB stands for Emacs Code Browser.
+
+**** General config
+
+General ECB configuration: disable tips, maximize at startup...
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(require 'ecb)
+(require 'ecb-util)
+(require 'ecb-layout)
+(require 'ecb-common-browser)
+(eval-when-compile
+  ;; to avoid compiler grips
+  (require 'cl))
+
+(setq ecb-tip-of-the-day nil)
+
+;; Resize window with ECB
+(add-hook 'ecb-deactivate-hook 'toggle-frame-maximized t)
+;; resize the ECB window to be default (order matters here)
+(add-hook 'ecb-activate-hook (lambda () (ecb-redraw-layout)))
+(add-hook 'ecb-activate-hook 'toggle-frame-maximized t)
+#+END_SRC
+
+**** Layout definitions
+***** FONETIC layout
+
+Layout for my FONETIC workflow. It consists of three left windows
+(directories, files and methods) and one TODO window at the right.
+
+****** Todo buffer
+
+A buffer showing the contents of =c:/Users/aaguilar/ORG/trabajo.org=
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defconst ecb-todo-buffer-name " *ECB todo")
+(defun ecb-goto-todo-window ()
+  "Make the todo window the current window."
+  (interactive)
+  (ecb-goto-ecb-window ecb-todo-buffer-name))
+(defun ecb-todo-buffer-create ()
+  "Create the todo buffer."
+  (save-excursion
+    (if (get-buffer ecb-todo-buffer-name)
+        (get-buffer ecb-todo-buffer-name)
+      (progn
+        (find-file "c:/Users/aaguilar/ORG/trabajo.org")
+        (get-buffer (rename-buffer ecb-todo-buffer-name))))))
+(defecb-window-dedicator-to-ecb-buffer ecb-set-todo-buffer
+    ecb-todo-buffer-name nil
+  "Set the buffer in the current window to the todo-buffer and make this
+window dedicated for this buffer."
+  (switch-to-buffer (buffer-name (ecb-todo-buffer-create))))
+#+END_SRC
+
+****** Layout definition
+#+BEGIN_SRC emacs-lisp :tangle yes
+(ecb-layout-define "FONETIC-layout" left-right
+  "ECB Layout for FONETIC-IVR_VDF Workflow."
+  ;; 1. Define directories buffer
+  (ecb-set-directories-buffer)
+  ;; 2. Splitting the left column in two windows
+  (ecb-split-ver 0.34)
+  ;; 3. Define sources buffer
+  (ecb-set-sources-buffer)
+  ;; 4. Split again and switch
+  (ecb-split-ver 0.5)
+  ;; 5. Define methods buffer
+  (ecb-set-methods-buffer)
+  (select-window (next-window (next-window)))
+  ;; 6. Define TODO buffer
+  (ecb-set-todo-buffer)
+  ;; 7. Go back to ECB Edit window
+  (select-window (previous-window (selected-window) 0))
+  )
+#+END_SRC
+
+*** Snippets
+
+Yasnippet is a snippet framework for Emacs.
+Snippets are stored at =~/.emacs.d/snippets=
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (require 'yasnippet)
+  (yas-global-mode 1)
+#+END_SRC
+
+*** Autocomplete
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company
+    :config (add-hook 'prog-mode-hook 'company-mode))
+#+END_SRC
+
+*** Emacs Lisp
+
+**** Eldoc
+
+Eldoc provides minibuffer hints when working with Emacs Lisp.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package "eldoc"
+  :diminish eldoc-mode
+  :commands turn-on-eldoc-mode
+  :defer t
+  :init
+  (progn
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)))
+#+END_SRC
+
+*** C
+
+Code style.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (require 'cc-mode)
+  (setq-default c-basic-offset 4 c-default-style "k&r")
+  (setq-default tab-width 4 indent-tabs-mode nil)
+  (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
+#+END_SRC
+
+*** R
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ess-site
+    :commands R)
+#+END_SRC
+
+*** LaTeX
+
+Configuration related to LaTeX
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+;; Force LaTeX mode for .tex files
+(add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-mode))
+
+;; RefTeX loading
+(add-hook 'TeX-mode-hook 'turn-on-reftex) ; Activar reftex con AucTeX
+(setq reftex-plug-into-AUCTeX t)            ; Conectar a AUC TeX con RefTeX
+(setq TeX-default-mode '"latex-mode")       ; Modo ordinario para ficheros .tex
+(setq TeX-force-default-mode t)             ; Activar siempre dicho modo.
+
+;; TeX settings
+(setq TeX-parse-self t)                     ; Preview on load
+(setq TeX-auto-save t)                      ; Auto Save
+(setq TeX-PDF-mode t)                       ; PDF instead of div
+(add-hook 'TeX-mode-hook 'flyspell-mode)    ; Enable spell-checking
+(add-hook 'emacs-lisp-mode-hook 'flyspell-prog-mode)
+(add-hook 'TeX-mode-hook
+          (lambda () (TeX-fold-mode 1)))    ; Automatically activate TeX-fold-mode.
+(add-hook 'TeX-mode-hook 'LaTeX-math-mode)
+#+END_SRC
+
+** Fun
+*** Music
+
+Settings for the MPD player.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun my/music-keybindings ()
+  "Modify keymap for mpc-mode"
+  (local-set-key (kbd "C-c p") 'mpc-play-at-point))
+
+(add-hook 'mpc-mode-hook 'my/music-keybindings)
+#+END_SRC
+
+** Workarounds
+*** Clipboard
+
+I want Emacs to share the clipboard with my SO.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package clipmon
+    :init (progn (setq clipmon-action 'kill-new clipmon-timeout nil clipmon-sound nil clipmon-cursor-color nil clipmon-suffix nil) (clipmon-mode)))
+#+END_SRC
+
+*** TODO Windows OS
+
+Meter esto en (when (eq system-type 'windows-nt) ... )
+
+** Things that I want to try
+*** TODO Smartparens
+
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+#+END_SRC
