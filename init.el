@@ -16,15 +16,18 @@
 
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-(setq savehist-file "~/.emacs.d/savehist")
-(savehist-mode 1)
-(setq history-length t)
-(setq history-delete-duplicates t)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
-      '(kill-ring
-        search-ring
-        regexp-search-ring))
+(use-package savehist
+  :config
+  (progn
+    (setq savehist-file "~/.emacs.d/savehist"
+          history-length t
+          history-delete-duplicates t
+          savehist-save-minibuffer-history 1
+          savehist-additional-variables
+          '(kill-ring
+            search-ring
+            regexp-search-ring))
+    (savehist-mode 1)))
 
 (use-package helm
   :diminish helm-mode
@@ -34,8 +37,8 @@
     (require 'helm)
     (global-set-key (kbd "C-c h") 'helm-command-prefix)
     (global-unset-key (kbd "C-x c"))
-    (setq helm-candidate-number-limit 100)
-    (setq helm-idle-delay 0.0
+    (setq helm-candidate-number-limit 100
+          helm-idle-delay 0.0
           helm-input-idle-delay 0.01
           helm-yas-display-key-on-candidate t
           helm-quick-update t
@@ -83,22 +86,43 @@
 
 (use-package smart-mode-line)
 
-(load-theme 'monokai t)
+(use-package monokai-theme
+  :config
+  (load-theme 'monokai t))
 
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
-(defadvice kill-region (before slick-cut activate compile)
-  "When called interactively with no active region, kill a single line instead."
+(defun slick-cut (beg end)
   (interactive
-    (if mark-active (list (region-beginning) (region-end))
-      (list (line-beginning-position)
-        (line-beginning-position 2)))))
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (list (line-beginning-position) (line-beginning-position 2)))))
+
+(advice-add 'kill-region :before #'slick-cut)
+
+(defun slick-copy (beg end)
+  (interactive
+   (if mark-active
+       (list (region-beginning) (region-end))
+     (message "Copied line")
+     (list (line-beginning-position) (line-beginning-position 2)))))
+
+(advice-add 'kill-ring-save :before #'slick-copy)
 
 (use-package expand-region
   :defer t
   :bind ("C-=" . er/expand-region))
+
+(use-package multiple-cursors
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)) ; one line at a time
+      mouse-wheel-progressive-speed nil            ; don't accelerate
+      mouse-wheel-follow-mouse 't                  ; scroll window under mouse
+ )
 
 (windmove-default-keybindings)
 
@@ -107,11 +131,25 @@
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
 
+(use-package ace-jump-mode)
 
+(defun switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(use-package smartscan
-  :defer t
-  :config (global-smartscan-mode t))
+(use-package key-chord
+  :init
+  (progn
+    (setq key-chord-one-key-delay 0.16)
+    (key-chord-mode 1)
+    (key-chord-define-global "uu" 'undo)
+    (key-chord-define-global "JJ" 'switch-to-previous-buffer)
+    (key-chord-define-global "jk" 'ace-jump-char-mode)
+    (key-chord-define-global "jw" 'ace-jump-word-mode)
+    (key-chord-define-global "jl" 'ace-jump-line-mode)
+    (key-chord-define-global "CC" 'mc/edit-lines)))
 
 (defun my/smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
@@ -273,6 +311,12 @@ point reaches the beginning or end of the buffer, stop there."
 (setq show-paren-delay 0)
 
 (column-number-mode 1)
+(set-fill-column 80)
+
+(use-package fill-column-indicator
+  :config
+  (define-globalized-minor-mode my-global-fci-mode fci-mode turn-on-fci-mode)
+  (my-global-fci-mode 1))
 
 (setq path-to-ctags "ctags")
 (defun create-tags (dir-name)
@@ -285,13 +329,14 @@ point reaches the beginning or end of the buffer, stop there."
   :diminish projectile-mode
   :config
   (progn
-    (setq projectile-keymap-prefix (kbd "C-c p"))
-    (setq projectile-completion-system 'default)
-    (setq projectile-enable-caching t)
-    (setq projectile-indexing-method 'alien)
+    (setq projectile-keymap-prefix (kbd "C-c p")
+          projectile-completion-system 'default
+          projectile-enable-caching t
+          projectile-indexing-method 'alien)
     (add-to-list 'projectile-globally-ignored-files "node-modules"))
   :config
   (projectile-global-mode))
+;; Use projectile with helm
 (use-package helm-projectile)
 
 (require 'ecb)
@@ -371,6 +416,10 @@ window dedicated for this buffer."
 
 (use-package ess-site
   :commands R)
+; Open *.r in R-mode
+(add-to-list 'auto-mode-alist '("\\.r\\'" . R-mode))
+; Make ECB default layout left3
+(add-hook 'R-mode-hook (lambda () (setq ecb-layout-name "left3")))
 
 ;; Force LaTeX mode for .tex files
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-mode))

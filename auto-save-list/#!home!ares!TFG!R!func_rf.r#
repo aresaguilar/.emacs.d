@@ -1,0 +1,7 @@
+######################################################################
+# Project: LGBT Rights Timeseries                                    #
+# File: func_rf.r                                                    #
+# Description: Functions for creating, testing and evaluating a      #
+#              random forest for the LGBT data.                      #
+# Author: Ares Aguilar Sotos                                         #
+######################################################################
