@@ -35,6 +35,7 @@ Following packages must be installed in your emacs:
     - fill-column-indicator
     - ess
     - persistent-scratch
+    - expand-region
 
 Also, if you plan on using this init file in Windows, you sould also
 install the following packages as well:
@@ -290,7 +291,8 @@ selected.
 
 *** Expand region
 
-This is something I have to get the hang of too. It gradually expands the selection.
+This is something I have to get the hang of too.
+It gradually expands the selection, and it's bound to =C-==
 
 #+begin_src emacs-lisp :tangle yes
   (use-package expand-region

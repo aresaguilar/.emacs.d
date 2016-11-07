@@ -29,6 +29,10 @@
             regexp-search-ring))
     (savehist-mode 1)))
 
+(use-package persistent-scratch
+  :config
+  (persistent-scratch-setup-default))
+
 (use-package helm
   :diminish helm-mode
   :init
@@ -91,6 +95,16 @@
   (load-theme 'monokai t))
 
 (prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
+(setq default-file-name-coding-system 'utf-8)
+(setq default-keyboard-coding-system 'utf-8)
+(setq default-process-coding-system '(utf-8 . utf-8))
+(setq default-sendmail-coding-system 'utf-8)
+(setq default-terminal-coding-system 'utf-8)
+(set-language-environment "UTF-8")
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
@@ -304,6 +318,7 @@ point reaches the beginning or end of the buffer, stop there."
   (org-set-tags)
   )
 
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
 (electric-pair-mode 1)
@@ -411,7 +426,6 @@ window dedicated for this buffer."
 
 (require 'cc-mode)
 (setq-default c-basic-offset 4 c-default-style "k&r")
-(setq-default tab-width 4 indent-tabs-mode nil)
 (define-key c-mode-base-map (kbd "RET") 'newline-and-indent)
 
 (use-package ess-site
@@ -446,7 +460,98 @@ window dedicated for this buffer."
 
 (add-hook 'mpc-mode-hook 'my/music-keybindings)
 
+(defun runic-write-off ()
+  "Stop replacing character with runic ones"
+  (interactive)
+  (setq keyboard-translate-table nil)
+  (global-unset-key (kbd "<f12>"))
+  (message "Runic write mode disabled.")
+)
+
+(defun runic-write-on ()
+  "Replace all characters with its runic equivalent"
+  (interactive)
+  (setq keyboard-translate-table
+        (make-char-table 'keyboard-translate-table nil))
+                                        ; F
+  (aset keyboard-translate-table 102 5792)
+                                        ; U
+  (aset keyboard-translate-table 117 5794)
+                                        ; A
+  (aset keyboard-translate-table 97 5800)
+                                        ; R
+  (aset keyboard-translate-table 114 5792)
+                                        ; C, K, Q
+  (aset keyboard-translate-table 99 5810)
+  (aset keyboard-translate-table 107 5810)
+  (aset keyboard-translate-table 113 5810)
+                                        ; G
+  (aset keyboard-translate-table 103 5815)
+                                        ; W
+  (aset keyboard-translate-table 119 5817)
+                                        ; H
+  (aset keyboard-translate-table 104 5818)
+                                        ; N
+  (aset keyboard-translate-table 110 5822)
+                                        ; I
+  (aset keyboard-translate-table 105 5825)
+                                        ; J
+  (aset keyboard-translate-table 106 5827)
+                                        ; P
+  (aset keyboard-translate-table 112 5832)
+                                        ; Z
+  (aset keyboard-translate-table 122 5833)
+                                        ; S
+  (aset keyboard-translate-table 115 5835)
+                                        ; T
+  (aset keyboard-translate-table 116 5839)
+                                        ; B
+  (aset keyboard-translate-table 98 5842)
+                                        ; E
+  (aset keyboard-translate-table 101 5846)
+                                        ; M
+  (aset keyboard-translate-table 109 5847)
+                                        ; L
+  (aset keyboard-translate-table 108 5850)
+                                        ; O
+  (aset keyboard-translate-table 111 5855)
+                                        ; D
+  (aset keyboard-translate-table 100 5854)
+
+  (global-set-key (kbd "<f12>") 'runic-write-off)
+
+  (message "Runic write mode enabled. Press <f12> to exit.")
+)
+
 (use-package clipmon
   :init (progn (setq clipmon-action 'kill-new clipmon-timeout nil clipmon-sound nil clipmon-cursor-color nil clipmon-suffix nil) (clipmon-mode)))
+
+(when (eq system-type 'windows-nt)
+  ; FIX for keybindings
+  (setq w32-pass-lwindow-to-system nil
+        w32-lwindow-modifier 'super            ; Left Windows key
+        w32-pass-rwindow-to-system nil
+        w32-rwindow-modifier 'super            ; Right Windows key
+        w32-pass-apps-to-system nil
+        w32-apps-modifier 'hyper               ; Menu/App key
+  ; FIX for aspell
+        ispell-program-name "aspell"
+        ispell-list-command "--list"
+        ispell-personal-dictionary "~/.ispell"
+  ; FIX for find
+        find-program "C:\\cygwin64\\bin\\find.exe"
+        gc-cons-threshold (* 100 1024 1024))   ; 100 mb
+  ; FIX for TRAMP
+  (set-default 'tramp-auto-save-directory "~/AppData/Local/Temp")
+  (set-default 'tramp-default-method "plink")
+   ; Fix TLS
+  (set-default 'gnutls-trustfiles (cons
+                                   "C:/cygwin64/usr/ssl/certs/ca-bundle.trust.crt"
+                                   "C:/cygwin64/usr/ssl/certs/ca-bundle.crt"))  
+  ; FIX for cygwin paths
+  (use-package cygwin-mount
+    :config
+    (cygwin-mount-activate))
+  )
 
 
