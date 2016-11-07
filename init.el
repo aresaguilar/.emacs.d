@@ -347,7 +347,8 @@ point reaches the beginning or end of the buffer, stop there."
     (setq projectile-keymap-prefix (kbd "C-c p")
           projectile-completion-system 'default
           projectile-enable-caching t
-          projectile-indexing-method 'alien)
+          projectile-indexing-method 'alien
+          projectile-switch-project-action 'helm-projectile)
     (add-to-list 'projectile-globally-ignored-files "node-modules"))
   :config
   (projectile-global-mode))
@@ -454,6 +455,66 @@ window dedicated for this buffer."
           (lambda () (TeX-fold-mode 1)))    ; Automatically activate TeX-fold-mode.
 (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
 
+(add-hook 'nxml-mode-hook
+          (lambda ()
+            (set-variable
+             'imenu-generic-expression
+             (list
+              (list
+               nil
+               "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
+            (imenu-add-to-menubar "XML")
+            (setq ecb-layout-name "FONETIC-layout")))
+
+(use-package hideshow
+  :config
+  (add-to-list 'hs-special-modes-alist
+               '(nxml-mode
+                 "<!--\\|<[^/>]*[^/]>"
+                 "-->\\|</[^/>]*[^/]>"
+                 "<!--"
+                 sgml-skip-tag-forward
+                 nil)))
+(add-hook 'nxml-mode-hook 'hs-minor-mode)
+(add-to-list 'rng-schema-locating-files "~/.emacs.d/nxml-schemas/schemas.xml")
+
+(setq projectile-globally-ignored-directories
+      (append '(
+                ".settings"
+                "grammars"
+                "grammars-gsl"
+                "prompts"
+                )
+              projectile-globally-ignored-directories))
+(setq projectile-globally-ignored-files
+      (append '(
+                ".project"
+                "*.properties"
+                "*.grxml"
+                "*.grammar"
+                "*.wav"
+                )
+              projectile-globally-ignored-files))
+;; Ignore trash in grep
+(setq grep-find-ignored-directories
+      (append '(
+                ".settings"
+                "grammars"
+                "grammars-gsl"
+                "prompts"
+                )
+              grep-find-ignored-directories))
+(setq grep-find-ignored-files
+      (append '(
+                ".project"
+                "*.properties"
+                "*.grxml"
+                "*.grammar"
+                "*.wav"
+                "*.aspx"
+                )
+              grep-find-ignored-files))
+
 (defun my/music-keybindings ()
   "Modify keymap for mpc-mode"
   (local-set-key (kbd "C-c p") 'mpc-play-at-point))
@@ -473,7 +534,7 @@ window dedicated for this buffer."
   (interactive)
   (setq keyboard-translate-table
         (make-char-table 'keyboard-translate-table nil))
-                                        
+
   (aset keyboard-translate-table 102 5792) ; F
   (aset keyboard-translate-table 97 5800)  ; A
   (aset keyboard-translate-table 114 5792) ; R
@@ -526,7 +587,7 @@ window dedicated for this buffer."
    ; Fix TLS
   (set-default 'gnutls-trustfiles (cons
                                    "C:/cygwin64/usr/ssl/certs/ca-bundle.trust.crt"
-                                   "C:/cygwin64/usr/ssl/certs/ca-bundle.crt"))  
+                                   "C:/cygwin64/usr/ssl/certs/ca-bundle.crt"))
   ; FIX for cygwin paths
   (use-package cygwin-mount
     :config

@@ -945,7 +945,7 @@ To deactivate the runic writing, use the keybinding =<f12>=
     (interactive)
     (setq keyboard-translate-table
           (make-char-table 'keyboard-translate-table nil))
-                                          
+
     (aset keyboard-translate-table 102 5792) ; F
     (aset keyboard-translate-table 97 5800)  ; A
     (aset keyboard-translate-table 114 5792) ; R
@@ -1015,7 +1015,7 @@ work), making this section necessary.
      ; Fix TLS
     (set-default 'gnutls-trustfiles (cons
                                      "C:/cygwin64/usr/ssl/certs/ca-bundle.trust.crt"
-                                     "C:/cygwin64/usr/ssl/certs/ca-bundle.crt"))  
+                                     "C:/cygwin64/usr/ssl/certs/ca-bundle.crt"))
     ; FIX for cygwin paths
     (use-package cygwin-mount
       :config
