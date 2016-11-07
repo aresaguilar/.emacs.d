@@ -14,7 +14,7 @@
  '(org-reverse-note-order t)
  '(package-selected-packages
    (quote
-    (ess fill-column-indicator key-chord smartscan ace-jump-mode multiple-cursors company helm-projectile projectile smart-mode-line undo-tree yasnippet use-package solarized-theme monokai-theme helm ecb color-theme-solarized clipmon auto-complete))))
+    (cygwin-mount persistent-scratch ess fill-column-indicator key-chord smartscan ace-jump-mode multiple-cursors company helm-projectile projectile smart-mode-line undo-tree yasnippet use-package solarized-theme monokai-theme helm ecb color-theme-solarized clipmon auto-complete))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

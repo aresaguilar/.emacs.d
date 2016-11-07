@@ -4,151 +4,119 @@
 (setq savehist-minibuffer-history-variables '(ess--completing-hist tmphist query-replace-history query-replace-from-to-history helm-M-x-input-history buffer-name-history file-name-history minibuffer-history extended-command-history))
 (setq ess--completing-hist '("/home/ares/R/x86_64-pc-linux-gnu-library/3.3/XLConnect/help/print-methods"))
 (setq query-replace-history '("_" "."))
-(setq helm-M-x-input-history '("ecb" "bab" "mc ed" "babe" "ev" "org lin ins" "transpose li" "fci" "eshe" "undo tree" "insert" "layou" "eva" "recent f" "ess " "packa" "custo gro" "fc" "tangle bab" "eval re" "babel" #("is" 0 2 (fontified t face font-lock-comment-face)) "smart" "org babel" "ace jump" "switch to pre" "packa lis" "pack" "theme des" "tangle babel" "ecb de" "org tangl" "pa" "tangle" "org tan" "load"))
+(setq helm-M-x-input-history '("packa" "uni" "run" "runi" "ecb" "bab" "mc ed" "babe" "ev" "org lin ins" "transpose li" "fci" "eshe" "undo tree" "insert" "layou" "eva" "recent f" "ess " "custo gro" "fc" "tangle bab" "eval re" "babel" #("is" 0 2 (fontified t face font-lock-comment-face)) "smart" "org babel" "ace jump" "switch to pre" "packa lis" "pack" "theme des" "tangle babel" "ecb de" "org tangl" "pa" "tangle" "org tan" "load"))
 (setq buffer-name-history '("*R:TFG*" "init.org" "ares-mode-c-ide.el" "*Messages*"))
-(setq file-name-history '("~/TFG/R_before/CLASIFICADORES/knn.R" "~/TFG/R_before/create_data.R" "~/TFG/R_before/prepare_data.R" "~/.emacs.d/init.org" "~/TFG/R/func_ann.r" "~/TFG/R/init.r" "/home/ares/.local/share/applications/emacs.desktop" "/home/ares/%F" "~/init.org" "~/ares-init.org" "~/emacs-prelude/personal/ares-mode-c-ide.el" "~/.emacs" "c:/Users/Ares/ares-init.org"))
-(setq minibuffer-history '(#("R_before" 0 1 (fontified t face font-lock-string-face) 1 8 (fontified t face font-lock-string-face)) "cre" "/home/ares/TFG/R_before/CLASIFICADORES/" "/home/ares/TFG/R_before/create_data.R" "/home/ares/TFG/R_before/" "in" "ann" "R-mode-hook" "ecb lay" "here" "/home/ares/.emacs.d/or" "?matrixSt " "inst  pa" "/home/ares/TFG/R/fun" #("/home/ares/TFG/R/" 0 17 (helm-cand-num 1 helm-realvalue "/home/ares/TFG/R/." face helm-ff-dotted-directory)) "/home/ares/TFG/R/func_rf.r" "/home/ares/TFG/R/func_knn.r" "/home/ares/TFG/R/func_ann.r" "##" "/home/ares/TFG/R/func.r" #("*R" 0 2 (helm-cand-num 1)) "/home/ares/TFG/R/prep.r" "/home/ares/TFG/" "_" "" "/home/ares/TFG/R/i" "ess" "/home/ares/TFG/R/in" "fill" "begin" "/home/ares/.emacs.d/org" "key cho" "smartsca" "switch to pre" "ace jump" "begi" "multiple" "company" "Mes" "helm projec" "projectile" "smart mode" "undo" "M" "c:/Users/Ares/ini" "inhibi start" "c:/Users/Ares/in" "clipmo" "yasn" "ecb" "auto comple" "c:/Users/Ares/ares" "c:/Users/Ares/emacs-prelude/personal/c" "c:/Users/Ares/are" "c:/Users/Ares/.emacs" "mono" "monok" "sol" "sola" "solari" "helm" "use-package"))
-(setq extended-command-history '(#("ecb-activate" 0 12 (match-part "ecb-activate")) "mc/edit-lines" "eval-region" "transpose-lines" "fci-mode" "eshell" "undo-tree-visualize" "ecb-change-layout" "helm-recentf" "package-install" "customize-group" "smartscan-mode" "ace-jump-line-mode" "switch-to-prev-buffer" "package-list-packages" "describe-theme" "ecb-deactivate" "load-theme"))
-(setq kill-ring '("aresaguilar.hopto.org" "/usr/lib/jvm/java-8-oracle/jre" #("previous" 0 8 (org-category "init" face org-table font-lock-fontified t fontified t)) #("#+RESULTS:
+(setq file-name-history '("~/.emacs.d/init.org" "~/TFG/R_before/CLASIFICADORES/knn.R" "~/TFG/R_before/create_data.R" "~/TFG/R_before/prepare_data.R" "~/TFG/R/func_ann.r" "~/TFG/R/init.r" "/home/ares/.local/share/applications/emacs.desktop" "/home/ares/%F" "~/init.org" "~/ares-init.org" "~/emacs-prelude/personal/ares-mode-c-ide.el" "~/.emacs" "c:/Users/Ares/ares-init.org"))
+(setq minibuffer-history '("cyg" "syste" "scr" "beg" "runic" "persiste" "c:/Users/aaguilar/.emacs.d/org" #("R_before" 0 1 (fontified t face font-lock-string-face) 1 8 (fontified t face font-lock-string-face)) "cre" "/home/ares/TFG/R_before/CLASIFICADORES/" "/home/ares/TFG/R_before/create_data.R" "/home/ares/TFG/R_before/" "in" "ann" "R-mode-hook" "ecb lay" "here" "/home/ares/.emacs.d/or" "?matrixSt " "inst  pa" "/home/ares/TFG/R/fun" #("/home/ares/TFG/R/" 0 17 (helm-cand-num 1 helm-realvalue "/home/ares/TFG/R/." face helm-ff-dotted-directory)) "/home/ares/TFG/R/func_rf.r" "/home/ares/TFG/R/func_knn.r" "/home/ares/TFG/R/func_ann.r" "##" "/home/ares/TFG/R/func.r" #("*R" 0 2 (helm-cand-num 1)) "/home/ares/TFG/R/prep.r" "/home/ares/TFG/" "_" "" "/home/ares/TFG/R/i" "ess" "/home/ares/TFG/R/in" "fill" "begin" "/home/ares/.emacs.d/org" "key cho" "smartsca" "switch to pre" "ace jump" "begi" "multiple" "company" "Mes" "helm projec" "projectile" "smart mode" "undo" "M" "c:/Users/Ares/ini" "inhibi start" "c:/Users/Ares/in" "clipmo" "yasn" "ecb" "auto comple" "c:/Users/Ares/ares" "c:/Users/Ares/emacs-prelude/personal/c" "c:/Users/Ares/are" "c:/Users/Ares/.emacs" "mono" "monok" "sol" "sola" "solari" "helm" "use-package"))
+(setq extended-command-history '("package-install" "runic-write-on" "ecb-activate" "mc/edit-lines" "eval-region" "transpose-lines" "fci-mode" "eshell" "undo-tree-visualize" "ecb-change-layout" "helm-recentf" "customize-group" "smartscan-mode" "ace-jump-line-mode" "switch-to-prev-buffer" "package-list-packages" "describe-theme" "ecb-deactivate" "load-theme"))
+(setq kill-ring '(";; Fix TLS
+(set-default 'gnutls-trustfiles (cons
+                                 \"C:/cygwin64/usr/ssl/certs/ca-bundle.trust.crt\"
+                                 \"C:/cygwin64/usr/ssl/certs/ca-bundle.crt\"))
+" "(set-default 'tramp-auto-save-directory \"C:/Users/aaguilar/AppData/Local/Temp\")
+(set-default 'tramp-default-method \"plink\")
+" #("  ; FIX for TRAMP
+" 0 2 (fontified t) 2 4 (fontified t face font-lock-comment-delimiter-face) 4 17 (fontified t face font-lock-comment-face) 17 18 (fontified t face font-lock-comment-face)) "ispell-personal-dictionary \"~/.ispell" "ispell-list-command \"--list\")" "ispell-program-name \"aspell\"" "find-program \"C:\\\\cygwin64\\\\bin\\\\find.exe\")" #("with" 0 4 (fontified t)) "(cygwin-mount-activate)" "(setq w32-pass-lwindow-to-system nil)
+(setq w32-lwindow-modifier 'super) ; Left Windows key
+(setq w32-pass-rwindow-to-system nil)
+(setq w32-rwindow-modifier 'super) ; Right Windows key
+(setq w32-pass-apps-to-system nil)
+(setq w32-apps-modifier 'hyper) ; Menu/App key
+(setq gc-cons-threshold (* 100 1024 1024)) ;; 100 mb
+" #("Meter esto en 
+" 0 15 (fontified t)) #("(when (eq system-type 'windows-nt) ... )" 0 40 (fontified t)) #("#+BEGIN_SRC emacs-lisp :tangle yes
+
+#+END_SRC" 0 35 (fontified t font-lock-fontified t font-lock-multiline t face org-block-begin-line) 35 36 (fontified t font-lock-fontified t font-lock-multiline t face org-block) 36 45 (fontified t font-lock-fontified t font-lock-multiline t face org-block-end-line)) #("
+ᛖᛋᛏᛟ ᛖᛋ ᚢᚾᚨ ᛈᚠᚢᛖᛒᚨ
+hola que ase
+ᚺᛟᛚᚨ ᛖᛋᛏᛟ ᛖᛋ ᚢᚾᚨ ᛈᚠᚢᛖᛒᚨ ᛞᛖᛚ ᛗᛟᛞᛟ ᚠᚢᚾᛁᚲᛟ.
+ᛗᛁ ᚾᛟᛗᛒᚠᛖ ᛖᛋ ᚨᚠᛖᛋ ᚨᚷᚢᛁᛚᚨᚠ ᛋᛟᛏᛟᛋ y ᚨᛗᛟ ᚨ ᛞᚨᚾᛁᛖᛚ ᚷᛁᛗᛖᚾᛖᛉ." 0 1 (fontified t) 1 20 (fontified t) 20 33 (fontified t) 33 74 (fontified t) 74 129 (fontified t)) #("
+#+RESULTS:
+: runic-write-on
+" 0 1 (fontified t) 1 11 (fontified t font-lock-fontified t face org-meta-line) 11 12 (fontified t) 12 14 (fontified t org-no-flyspell t face org-code) 14 29 (fontified t org-no-flyspell t face org-code)) #(" Press <f12> to exit" 0 6 (face font-lock-string-face fontified t) 6 11 (face font-lock-string-face fontified t) 11 15 (fontified t face font-lock-string-face) 15 20 (face font-lock-string-face fontified t)) #("  (message \"Runic write mode enabled. Press <f12> to exit.\")
+" 0 2 (fontified t) 2 3 (fontified t) 3 11 (fontified t) 11 59 (fontified t face font-lock-string-face) 59 60 (fontified t) 60 61 (fontified t)) #("(kbd \"<f12>\")" 0 5 (fontified t) 5 12 (fontified t face font-lock-string-face) 12 13 (fontified t)) #("(defun runic-write-off ()
+  \"Stop replacing character with runic ones\"
+  (interactive)
+  (setq keyboard-translate-table nil))" 0 1 (fontified t) 1 6 (fontified t face font-lock-keyword-face) 6 7 (fontified t) 7 22 (fontified t face font-lock-function-name-face) 22 28 (fontified t) 28 70 (fontified t face font-lock-doc-face) 70 74 (fontified t) 74 85 (fontified t face font-lock-keyword-face) 85 90 (fontified t) 90 94 (fontified t face font-lock-keyword-face) 94 125 (fontified t)) "(global-set-key (kbd \"<f7> <f8>\") 'calendar)" "(defun runic-write-on ()
+  \"Replace all characters with its runic equivalent\"
+  (interactive)
+  (setq keyboard-translate-table
+        (make-char-table 'keyboard-translate-table nil))
+                                        ; F
+  (aset keyboard-translate-table 102 5792)
+                                        ; U
+  (aset keyboard-translate-table 117 5794)
+                                        ; A
+  (aset keyboard-translate-table 97 5800)
+                                        ; R
+  (aset keyboard-translate-table 114 5792)
+                                        ; C, K, Q
+  (aset keyboard-translate-table 99 5810)
+  (aset keyboard-translate-table 107 5810)
+  (aset keyboard-translate-table 113 5810)
+                                        ; G
+  (aset keyboard-translate-table 103 5815)
+                                        ; W
+  (aset keyboard-translate-table 119 5817)
+                                        ; H
+  (aset keyboard-translate-table 104 5818)
+                                        ; N
+  (aset keyboard-translate-table 110 5822)
+                                        ; I
+  (aset keyboard-translate-table 105 5825)
+                                        ; J
+  (aset keyboard-translate-table 106 5827)
+                                        ; P
+  (aset keyboard-translate-table 112 5832)
+                                        ; Z
+  (aset keyboard-translate-table 122 5833)
+                                        ; S
+  (aset keyboard-translate-table 115 5835)
+                                        ; T
+  (aset keyboard-translate-table 116 5839)
+                                        ; B
+  (aset keyboard-translate-table 98 5842)
+                                        ; E
+  (aset keyboard-translate-table 101 5846)
+                                        ; M
+  (aset keyboard-translate-table 109 5847)
+                                        ; L
+  (aset keyboard-translate-table 108 5850)
+                                        ; O
+  (aset keyboard-translate-table 111 5855)
+                                        ; D
+  (aset keyboard-translate-table 100 5854)
+  )
+
+(defun runic-write-off ()
+  \"Stop replacing character with runic ones\"
+  (interactive)
+  (setq keyboard-translate-table nil))
+" "#+BEGIN_SRC emacs-lisp :tangle yes
+" "https://en.wikipedia.org/wiki/Runes" "(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
+(setq default-file-name-coding-system 'utf-8)
+(setq default-keyboard-coding-system 'utf-8)
+(setq default-process-coding-system '(utf-8 . utf-8))
+(setq default-sendmail-coding-system 'utf-8)
+(setq default-terminal-coding-system 'utf-8)
+(set-language-environment \"UTF-8\")
+" "(setq-default indent-tabs-mode nil)
+" "There were problems decrypting some credentials.
+Click OK to copy the details to the clipboard.
+
+Custom passwords:
+alu-fonetic\\local\\MVOno: RDCMan/file/group/server/logonCredentials/password [Failed to decrypt using FONETIC\\aaguilar credential]
+" #("persistent-scratch" 0 18 (fontified t font-lock-fontified t face (org-verbatim) org-no-flyspell t font-lock-multiline t org-emphasis t)) #("\"~/.emacs.d/savehist\"" 0 21 (fontified t font-lock-fontified t font-lock-multiline t face org-block)) "(persistent-scratch-setup-default)
+" "	Modelado del comportamiento de la igualdad de genero en los países con IA" "1516_049_COIS" "Predicción y análisis de series temporales de la evolución de los derechos LGBT a través de técnicas de aprendizaje automático" "\"Predicción y análisis de series temporales " "aresaguilar.hopto.org" "/usr/lib/jvm/java-8-oracle/jre" #("previous" 0 8 (org-category "init" face org-table font-lock-fontified t fontified t)) #("#+RESULTS:
 " 0 10 (face org-meta-line font-lock-fontified t fontified t) 10 11 (fontified nil)) #("auto-fill-mode -1" 0 4 (fontified t) 4 9 (fontified t) 9 14 (fontified t) 14 17 (fontified t)) #("ecb-layout-name" 0 15 (fontified t)) #("latex" 0 5 (fontified t)) "(add-hook 'latex-mode-hook (lambda () (auto-fill-mode -1)))" "ecb-layout-name" "(add-hook 'c-mode-common-hook
   (lambda () (c-add-style \"my-style\" my-c-style t)))" #("python" 0 6 (fontified t)) "(add-to-list 'auto-mode-alist '(\"\\\\.py\\\\'\" . python-mode))" #("'switch-to-prev-buffer" 0 7 (fontified t font-lock-fontified t font-lock-multiline t face org-block) 7 10 (fontified t font-lock-fontified t font-lock-multiline t face org-block) 10 15 (face org-block font-lock-multiline t font-lock-fontified t fontified t) 15 22 (fontified t font-lock-fontified t font-lock-multiline t face org-block)) "'switch-to-previous-buffer" "(defun switch-to-previous-buffer ()
   \"Switch to previously open buffer.
 Repeated invocations toggle between the two most recently open buffers.\"
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))" #("#+BEGIN_SRC emacs-lisp :tangle yes
-" 0 35 (face org-block-begin-line font-lock-multiline t font-lock-fontified t fontified t)) "http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/" #("quantmod" 0 8 (face font-lock-string-face fontified t)) "RWeka" "dplyr" "matrixStats" "quantmod" "/home/ares/TFG/DATOS/TimesSeriesData_50yearsofGILRHO.xls" #("display" 0 7 (fontified t)) #("e_" 0 1 (fontified t) 1 2 (fontified t)) "https://aresaguilar@bitbucket.org/aresaguilar/tfg.git" "R/.#func_rf.r" #("
-
-
-
-" 0 1 (fontified t) 1 2 (fontified t) 2 3 (fontified t) 3 4 (fontified t)) #("
-
-
-
-" 0 1 (fontified t) 1 2 (fontified t) 2 3 (fontified t) 3 4 (fontified t)) "ann" #("Init routine that sets the proper working directory,  #" 0 51 (face font-lock-comment-face fontified t) 51 55 (face font-lock-comment-face fontified t)) #("#              cheks if all packages are installed and loads         #
-                                        #              required modules.                                     #
-" 0 15 (fontified t face font-lock-comment-delimiter-face) 15 70 (fontified t face font-lock-comment-face) 70 71 (fontified t face font-lock-comment-face) 71 111 (fontified t) 111 126 (fontified t face font-lock-comment-delimiter-face) 126 182 (fontified t face font-lock-comment-face)) #("######################################################################
-# Project: LGBT Rights Timeseries                                    #
-# File: init.r                                                       #
-# Description: Init routine that sets the proper working directory,  #
-#              cheks if all packages are installed and loads         #
-#              required modules.                                     #
-# Author: Ares Aguilar Sotos                                         #
-######################################################################
-" 0 70 (face font-lock-comment-delimiter-face fontified t) 70 71 (face font-lock-comment-face fontified t) 71 73 (face font-lock-comment-delimiter-face fontified t) 73 141 (face font-lock-comment-face fontified t) 141 142 (face font-lock-comment-face fontified t) 142 144 (face font-lock-comment-delimiter-face fontified t) 144 213 (face font-lock-comment-face fontified t) 213 215 (face font-lock-comment-delimiter-face fontified t) 215 279 (face font-lock-comment-face fontified t) 279 283 (face font-lock-comment-face fontified t) 283 284 (face font-lock-comment-face fontified t) 284 299 (face font-lock-comment-delimiter-face fontified t) 299 354 (face font-lock-comment-face fontified t) 354 355 (face font-lock-comment-face fontified t) 355 370 (face font-lock-comment-delimiter-face fontified t) 370 425 (face font-lock-comment-face fontified t) 425 426 (face font-lock-comment-face fontified t) 426 428 (face font-lock-comment-delimiter-face fontified t) 428 496 (face font-lock-comment-face fontified t) 496 497 (face font-lock-comment-face fontified t) 497 567 (face font-lock-comment-delimiter-face fontified t) 567 568 (face font-lock-comment-face fontified t rear-nonsticky t)) #("_" 0 1 (fontified t)) #("#               - wb_gay: Gay rights excel book                      #
-" 0 16 (face font-lock-comment-delimiter-face fontified t) 16 20 (face font-lock-comment-face fontified t) 20 70 (face font-lock-comment-face fontified t) 70 71 (fontified nil face font-lock-comment-face)) "# Set Region means
-df_gay$GILRHO <- as.numeric(df_gay$GILRHO)
-df_gay$mean_region_prev1 <- 0.0
-df_gay$mean_region_prev2 <- 0.0
-for (region in unique(df_gay$M49_Region)) {
-  for (year in 1960:2016) {
-    mean <- mean(df_gay[((df_gay$Years == year) & (df_gay$M49_Region == region)), 'GILRHO'])
-    df_gay[((df_gay$Years == year + 1) & (df_gay$M49_Region == region)), 'mean_region_prev1'] <- mean
-    df_gay[((df_gay$Years == year + 2) & (df_gay$M49_Region == region)), 'mean_region_prev2'] <- mean
-  }
-}
-
-# Set Subregion means
-df_gay$mean_subregion_prev1 <- 0.0
-df_gay$mean_subregion_prev2 <- 0.0
-for (region in unique(df_gay$M49_Subregion)) {
-  for (year in 1960:2016) {
-    mean <- mean(df_gay[((df_gay$Years == year) & (df_gay$M49_Subregion == region)), 'GILRHO'])
-    df_gay[((df_gay$Years == year + 1) & (df_gay$M49_Subregion == region)), 'mean_subregion_prev1'] <- mean
-    df_gay[((df_gay$Years == year + 2) & (df_gay$M49_Subregion == region)), 'mean_subregion_prev2'] <- mean
-  }
-}
-
-# Set Previous GILRHOs
-df_gay$gilrho_prev1 <- 0.0
-df_gay$gilrho_prev2 <- 0.0
-df_gay$gilrho_prev3 <- 0.0
-df_gay$gilrho_prev4 <- 0.0
-df_gay$gilrho_prev5 <- 0.0
-for (region in unique(df_gay$ISO3166)) {
-  for (year in 1960:2016) {
-    mean <- mean(df_gay[((df_gay$Years == year) & (df_gay$ISO3166 == region)), 'GILRHO'])
-    df_gay[((df_gay$Years == year + 1) & (df_gay$ISO3166 == region)), 'gilrho_prev1'] <- mean
-    df_gay[((df_gay$Years == year + 2) & (df_gay$ISO3166 == region)), 'gilrho_prev2'] <- mean
-    df_gay[((df_gay$Years == year + 3) & (df_gay$ISO3166 == region)), 'gilrho_prev3'] <- mean
-    df_gay[((df_gay$Years == year + 4) & (df_gay$ISO3166 == region)), 'gilrho_prev4'] <- mean
-    df_gay[((df_gay$Years == year + 5) & (df_gay$ISO3166 == region)), 'gilrho_prev5'] <- mean
-    
-    }
-}" #("Excel" 0 5 (face font-lock-comment-face fontified t)) "# Read sheets
-for (sheet in getSheets(wb_gay)[-1]) {
-  print(sheet)
-  lst <- readWorksheet(wb_gay, sheet = sheet)
-  df_sheet <- subset(lst, select = c(Years, GILRHO))
-  
-  # Append ISO3166
-  iso3166_sheet <- ISO_3166_1$Alpha_3[(ISO_3166_1$Name == sheet)]
-  df_sheet$ISO3166 <- rep(iso3166_sheet, nrow(df_sheet))
-  m49_sheet <- ISO_3166_1$Numeric[(ISO_3166_1$Name == sheet)]
-  
-  # Append M49 Subregion
-  subregion_sheet <- UN_M.49_Regions$Code[grepl(m49_sheet, UN_M.49_Regions$Children)]
-  if (is.vector(subregion_sheet)) {
-    subregion_sheet <- subregion_sheet[1]
-  }
-  df_sheet$M49_Subregion <- rep(subregion_sheet, nrow(df_sheet))
-  
-  # Append M49 Region
-  region_sheet <- UN_M.49_Regions$Parent[grepl(m49_sheet, UN_M.49_Regions$Children)]
-  if (is.vector(region_sheet)) {
-    region_sheet <- region_sheet[1]
-  }
-  df_sheet$M49_Region <- rep(region_sheet, nrow(df_sheet))
-  
-  
-  # Create predictions
-  predictions_sheet <- data.frame(seq(2017, 2050), rep('?', 34), rep(iso3166_sheet, 34), rep(subregion_sheet, 34), rep(region_sheet, 34))
-  colnames(predictions_sheet) <- colnames(df_sheet)
-  df_sheet <- rbind(df_sheet, predictions_sheet)
-  
-  # Append decade number
-  decade_sheet <- intToBin(((df_sheet$Years - (df_sheet$Years %% 10)) / 10) - 196)
-  df_sheet$Decade <- decade_sheet
-  
-  # Store sheet in df_gay
-  df_gay <- rbind(df_gay, df_sheet)
-}
-df_gay$Years<-as.integer(df_gay$Years)" "# Read XLS
-wb_gay <<- loadWorkbook(\"../DATOS/TimesSeriesData_50yearsofGILRHO.xls\", create = FALSE)
-
-# Initialize dataframe
-df_gay <- data.frame(Years=integer(),
-                     GILRHO=integer(),
-                     ISO3166=character(),
-                     M49_Subregion=character(),
-                     M49_Region=character(),
-                     Decade=character(),
-                     stringsAsFactors=FALSE)" "data(\"ISO_3166_1\")
-data(\"UN_M.49_Regions\")" #("#              cheks if all packages are installed and loads         #
-#              required modules.                                     #
-" 0 15 (face font-lock-comment-delimiter-face fontified t) 15 70 (fontified nil face font-lock-comment-face) 70 71 (fontified nil face font-lock-comment-face) 71 86 (fontified t face font-lock-comment-delimiter-face) 86 141 (fontified t face font-lock-comment-face) 141 142 (fontified t face font-lock-comment-face)) #(" Init routine that sets the proper working directory,  #" 0 52 (face font-lock-comment-face fontified t) 52 56 (face font-lock-comment-face fontified t)) #("init" 0 4 (face font-lock-comment-face fontified t)) "install_github('rCharts', 'ramnathv')" #("
-# Install my version of rMaps
-" 0 1 (fontified t) 1 3 (fontified t face font-lock-comment-delimiter-face) 3 12 (fontified t face font-lock-comment-face) 12 30 (fontified t face font-lock-comment-face) 30 31 (fontified t face font-lock-comment-face)) #("                      \"rCharts\"        # Dependency for rMaps
-" 0 22 (fontified t) 22 31 (face font-lock-string-face fontified t) 31 39 (fontified t) 39 41 (face font-lock-comment-delimiter-face fontified t) 41 61 (face font-lock-comment-face fontified t) 61 62 (fontified nil face font-lock-comment-face)) "install_github('rCharts', 'ramnathv')" #("httr" 0 4 (face font-lock-string-face fontified t)) "R CMD javareconf" #("configure: error: Java interpreter '/usr/lib/jvm/default-java/jre/bin/java' does not work
-" 0 90 (fontified t)) #("_" 0 1 (fontified t)) #("install_github('aresaguilar/rMaps')
-" 0 15 (fontified t) 15 34 (face font-lock-string-face fontified t) 34 36 (fontified t)) "function(x)
-  {
-    if (!require(x,character.only = TRUE))
-    {
-      install.packages(x,dep=TRUE)
-        if(!require(x,character.only = TRUE)) stop(\"Package not found\")
-    }
-  }" #("######################################################################
-" 0 70 (face font-lock-comment-delimiter-face fontified t) 70 71 (face font-lock-comment-face fontified t rear-nonsticky t)) #("######################################################################
-" 0 70 (face font-lock-comment-delimiter-face fontified t) 70 71 (face font-lock-comment-face fontified t)) #("######################################################################
-" 0 70 (face font-lock-comment-delimiter-face fontified t) 70 71 (face font-lock-comment-face fontified t)) #("######################################################################
-" 0 70 (face font-lock-comment-delimiter-face fontified t) 70 71 (face font-lock-comment-face fontified t)) #("=M-w= saves a current line to kill ring (aka copies) if no region is
-" 0 5 (org-emphasis t font-lock-multiline t org-no-flyspell t face (org-verbatim) fontified t) 5 6 (org-no-flyspell t fontified t) 6 40 (fontified t) 40 69 (fontified t)) "(defun slick-copy (beg end)
-  (interactive
-   (if mark-active
-       (list (region-beginning) (region-end))
-     (message \"Copied line\")
-     (list (line-beginning-position) (line-beginning-position 2)))))
-
-(advice-add 'kill-ring-save :before #'slick-copy)" #("#+BEGIN_SRC emacs-lisp :tangle yes" 0 34 (face org-block-begin-line font-lock-multiline t font-lock-fontified t fontified t))))
-(setq search-ring '("key ch" "JJ" "* R" "smartsca" "smarts" "monokai" "savehist" "fly" "prere" "c-mode-bas" "prer" "solari" "ac-modes" "ac-m" "find-fil"))
+" 0 35 (face org-block-begin-line font-lock-multiline t font-lock-fontified t fontified t)) "http://emacsredux.com/blog/2013/04/28/switch-to-previous-buffer/" #("quantmod" 0 8 (face font-lock-string-face fontified t)) "RWeka" "dplyr" "matrixStats" "quantmod" "/home/ares/TFG/DATOS/TimesSeriesData_50yearsofGILRHO.xls" #("display" 0 7 (fontified t)) #("e_" 0 1 (fontified t) 1 2 (fontified t)) "https://aresaguilar@bitbucket.org/aresaguilar/tfg.git" "R/.#func_rf.r"))
+(setq search-ring '("tabs" "key ch" "JJ" "* R" "smartsca" "smarts" "monokai" "savehist" "fly" "prere" "c-mode-bas" "prer" "solari" "ac-modes" "ac-m" "find-fil"))
 (setq regexp-search-ring 'nil)

@@ -1,0 +1,38 @@
+# -*- mode: snippet -*-
+# name: transaccion
+# key: formtx
+# --
+    <form id="$1.tx">
+        <var name="formName" expr="'$1.tx'"/>
+        <var name="url" expr="'$2'"/>
+        <var name="msisdn" expr="AppState.getDatosLlamada().getMsisdn()"/>
+        <var name="modulo" expr="'$3'"/>
+        <var name="vdnentrada" expr="AppState.vdnEntrada"/>
+        <var name="idLlamada" expr="AppState.idLlamada"/>
+
+        <subdialog name="request" srcexpr="'/IVRVF_ASPX/' + url" namelist="msisdn modulo vdnentrada idLlamada">
+            <filled>
+                <assign name="txResult" expr="request.result"/>
+                <if cond="request.result.resultado == 'OK'">
+                    <goto expr="'#' + formName + '.ok'"/>
+                <else/>
+                    <goto expr="'#' + formName + '.nok'"/>
+                </if>
+            </filled>
+            <catch event="error.badfetch">
+                <goto expr="'#' + formName + '.nok'"/>
+            </catch>
+        </subdialog>
+    </form>
+
+    <form id="$1.tx.ok">
+        <block>
+            $4
+        </block>
+    </form>
+
+    <form id="$1.tx.nok">
+        <block>
+            $0
+        </block>
+    </form>
