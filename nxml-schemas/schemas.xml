@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+  <transformURI fromPattern="*.xml" toPattern="*.rnc"/>
+
+  <uri pattern="*.vxml" typeId="VXML"/>
+  <namespace ns="http://www.w3.org/2001/vxml"       typeId="VXML"/>
+  <documentElement localName="vxml" typeId="VXML"/>
+  <typeId id="VXML" uri="vxml.rnc"/>
+
+</locatingRules>

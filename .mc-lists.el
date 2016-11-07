@@ -3,8 +3,11 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        kill-region
         org-delete-char
+        org-end-of-line
         org-self-insert-command
+        org-yank
         ))
 
 (setq mc/cmds-to-run-once

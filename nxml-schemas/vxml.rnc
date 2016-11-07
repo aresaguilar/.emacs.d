@@ -1,0 +1,572 @@
+# VoiceXML 2.1 DTD (20060322)
+# 
+# Copyright 1998-2006 W3C (MIT, ERCIM, Keio), All Rights Reserved. 
+# 
+# Permission to use, copy, modify and distribute the VoiceXML DTD and 
+# its accompanying documentation for any purpose and without fee is 
+# hereby granted in perpetuity, provided that the above copyright 
+# notice and this paragraph appear in all copies.  
+# 
+# The copyright holders make no representation about the suitability 
+# of the DTD for any purpose. It is provided "as is" without expressed 
+# or implied warranty.
+
+default namespace = "http://www.w3.org/2001/vxml"
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
+namespace xsi = "##xsi"
+
+audio = text | audio.element | enumerate.element | value.element
+bargeintype = "speech" | "hotword"
+boolean = "true" | "false"
+content.type = string
+duration = string
+event.handler =
+  catch.element
+  | help.element
+  | noinput.element
+  | nomatch.element
+  | error.element
+event.name = xsd:NMTOKEN
+event.names = xsd:NMTOKENS
+executable.content =
+  audio
+  | assign.element
+  | clear.element
+  | data.element
+  | disconnect.element
+  | exit.element
+  | foreach.element
+  | goto.element
+  | if.element
+  | log.element
+  | prompt.element
+  | reprompt.element
+  | return.element
+  | script.element
+  | submit.element
+  | throw.element
+  | var.element
+expression = string
+restrictedvariable.name = string
+variable.name = string
+restrictedvariable.names = string
+variable.names = string
+integer = string
+item.attrs =
+  attribute name { restrictedvariable.name }?,
+  attribute cond { expression }?,
+  attribute expr { expression }?
+uri = string
+cache.attrs =
+  attribute fetchhint { "prefetch" | "safe" }?,
+  attribute fetchtimeout { duration }?,
+  attribute maxage { integer }?,
+  attribute maxstale { integer }?
+next.attrs =
+  attribute next { uri }?,
+  attribute expr { expression }?
+submit.attrs =
+  [ a:defaultValue = "get" ] attribute method { "get" | "post" }?,
+  [ a:defaultValue = "application/x-www-form-urlencoded" ]
+  attribute enctype { content.type }?,
+  attribute namelist { variable.names }?
+throw.attrs =
+  attribute event { event.name }?,
+  attribute eventexpr { expression }?,
+  attribute message { text }?,
+  attribute messageexpr { expression }?
+variable = block.element | data.element | field.element | var.element
+# ================================= Root ================================
+vxml.element =
+  element vxml {
+    vxml.attlist,
+    (event.handler
+     | data.element
+     | form.element
+     | link.element
+     | menu.element
+     | meta.element
+     | metadata.element
+     | property.element
+     | script.element
+     | var.element)+
+  }
+vxml.attlist &=
+  attribute application { uri }?,
+  attribute xml:base { uri }?,
+  attribute xml:lang { xsd:NMTOKEN }?,
+  attribute xsi:schemaLocation { text }?,
+  attribute version { text }
+meta.element = element meta { meta.attlist, empty }
+meta.attlist &=
+  attribute name { xsd:NMTOKEN }?,
+  attribute content { text },
+  attribute http-equiv { xsd:NMTOKEN }?
+metadata.element = element metadata { metadata.attlist, any }
+metadata.attlist &= empty
+# ================================ Prompts ==============================
+
+# definitions adapted from SSML 1.0 DTD
+structure = p.element | s.element
+sentence-elements =
+  break.element
+  | emphasis.element
+  | mark.element
+  | phoneme.element
+  | prosody.element
+  | say-as.element
+  | voice.element
+  | sub.element
+# addition of enumerate and value elements as 'allowed-within-sentence' 
+# audio elements
+allowed-within-sentence = audio | sentence-elements
+# Prompt is modelled on SSML 1.0 DTD speak element:
+# - addition of 'bargein', 'bargeintype', 'cond', 'count' and 'timeout' attributes
+# - removal of xmlns, xmlns:xsi, and xsi:schemaLocation attributes
+# - version attribute fixed as "1.0"
+prompt.element =
+  element prompt {
+    prompt.attlist,
+    (allowed-within-sentence
+     | foreach.element
+     | structure
+     | lexicon.element
+     | metadata.element
+     | meta.element)*
+  }
+prompt.attlist &=
+  attribute bargein { boolean }?,
+  attribute bargeintype { bargeintype }?,
+  attribute cond { expression }?,
+  attribute count { integer }?,
+  attribute xml:lang { xsd:NMTOKEN }?,
+  attribute timeout { duration }?,
+  attribute xml:base { uri }?,
+  [ a:defaultValue = "1.0" ] attribute version { string "1.0" }?
+enumerate.element =
+  element enumerate {
+    enumerate.attlist, (allowed-within-sentence | structure)*
+  }
+enumerate.attlist &= empty
+reprompt.element = element reprompt { reprompt.attlist, empty }
+reprompt.attlist &= empty
+# ================================= Dialogs =============================
+input = grammar.element
+scope = "document" | "dialog"
+form.element =
+  element form {
+    form.attlist,
+    (input
+     | event.handler
+     | filled.element
+     | initial.element
+     | object.element
+     | link.element
+     | property.element
+     | record.element
+     | script.element
+     | subdialog.element
+     | transfer.element
+     | variable)*
+  }
+form.attlist &=
+  attribute id { xsd:ID }?,
+  [ a:defaultValue = "dialog" ] attribute scope { scope }?
+accept.attrs =
+  [ a:defaultValue = "exact" ]
+  attribute accept { "exact" | "approximate" }?
+menu.element =
+  element menu {
+    menu.attlist,
+    (audio
+     | choice.element
+     | event.handler
+     | prompt.element
+     | property.element)*
+  }
+menu.attlist &=
+  attribute id { xsd:ID }?,
+  [ a:defaultValue = "dialog" ] attribute scope { scope }?,
+  accept.attrs,
+  [ a:defaultValue = "false" ] attribute dtmf { boolean }?
+choice.element = element choice { choice.attlist, (text | input)* }
+choice.attlist &=
+  cache.attrs,
+  attribute accept { "exact" | "approximate" }?,
+  attribute dtmf { text }?,
+  throw.attrs,
+  attribute fetchaudio { uri }?,
+  next.attrs
+# ================================ Audio Output ==============================
+
+# definitions adapted from SSML 1.0 DTD
+p.element =
+  element p { p.attlist, (allowed-within-sentence | s.element)* }
+p.attlist &= attribute xml:lang { xsd:NMTOKEN }?
+s.element = element s { s.attlist, allowed-within-sentence* }
+s.attlist &= attribute xml:lang { xsd:NMTOKEN }?
+voice.element =
+  element voice {
+    voice.attlist, (allowed-within-sentence | structure)*
+  }
+voice.attlist &=
+  attribute xml:lang { xsd:NMTOKEN }?,
+  attribute gender { "male" | "female" | "neutral" }?,
+  attribute age { integer }?,
+  attribute variant { integer }?,
+  attribute name { text }?
+prosody.element =
+  element prosody {
+    prosody.attlist, (allowed-within-sentence | structure)*
+  }
+prosody.attlist &=
+  attribute pitch { text }?,
+  attribute contour { text }?,
+  attribute range { text }?,
+  attribute rate { text }?,
+  attribute duration { duration }?,
+  attribute volume { text }?
+# Changes to SSML 1.0 DTD audio element:
+# - src not obligatory, addition of 'expr' and caching attributes
+audio.element =
+  element audio {
+    audio.attlist, (allowed-within-sentence | structure | desc.element)*
+  }
+audio.attlist &=
+  attribute src { uri }?,
+  attribute expr { expression }?,
+  cache.attrs
+desc.element = element desc { desc.attlist, text }
+desc.attlist &= attribute xml:lang { xsd:NMTOKEN }?
+emphasis.element =
+  element emphasis { emphasis.attlist, allowed-within-sentence* }
+emphasis.attlist &=
+  [ a:defaultValue = "moderate" ]
+  attribute level { "strong" | "moderate" | "none" | "reduced" }?
+# Changes to SSML 1.0 DTD say-as element:
+# - allows value element as child
+say-as.element =
+  element say-as { say-as.attlist, (text | value.element)* }
+say-as.attlist &=
+  attribute interpret-as { xsd:NMTOKEN },
+  attribute format { xsd:NMTOKEN }?,
+  attribute detail { xsd:NMTOKEN }?
+sub.element = element sub { sub.attlist, text }
+sub.attlist &= attribute alias { text }
+phoneme.element = element phoneme { phoneme.attlist, text }
+phoneme.attlist &=
+  attribute ph { text },
+  attribute alphabet { text }?
+break.element = element break { break.attlist, empty }
+break.attlist &=
+  attribute time { text }?,
+  [ a:defaultValue = "medium" ]
+  attribute strength {
+    "none" | "x-weak" | "weak" | "medium" | "strong" | "x-strong"
+  }?
+mark.element = element mark { mark.attlist, empty }
+mark.attlist &=
+  attribute name { xsd:ID }?,
+  attribute nameexpr { expression }?
+# ================================ Fields ===============================
+field.element =
+  element field {
+    field.attlist,
+    (audio
+     | event.handler
+     | filled.element
+     | input
+     | link.element
+     | option.element
+     | prompt.element
+     | property.element)*
+  }
+field.attlist &=
+  item.attrs,
+  attribute type { text }?,
+  attribute slot { xsd:NMTOKEN }?,
+  [ a:defaultValue = "false" ] attribute modal { boolean }?
+option.element = element option { option.attlist, text }
+option.attlist &=
+  accept.attrs,
+  attribute dtmf { text }?,
+  attribute value { text }?
+var.element = element var { var.attlist, empty }
+var.attlist &=
+  attribute name { restrictedvariable.name },
+  attribute expr { expression }?
+initial.element =
+  element initial {
+    initial.attlist,
+    (audio
+     | event.handler
+     | link.element
+     | prompt.element
+     | property.element)*
+  }
+initial.attlist &= item.attrs
+block.element = element block { block.attlist, executable.content* }
+block.attlist &= item.attrs
+assign.element = element assign { assign.attlist, empty }
+assign.attlist &=
+  attribute name { variable.name },
+  attribute expr { expression }
+clear.element = element clear { clear.attlist, empty }
+clear.attlist &= attribute namelist { variable.names }?
+value.element = element value { value.attlist, empty }
+value.attlist &= attribute expr { expression }
+# ================================== Events =============================
+event.handler.attrs =
+  attribute count { integer }?,
+  attribute cond { expression }?
+catch.element = element catch { catch.attlist, executable.content* }
+catch.attlist &=
+  attribute event { event.names }?,
+  event.handler.attrs
+error.element = element error { error.attlist, executable.content* }
+error.attlist &= event.handler.attrs
+help.element = element help { help.attlist, executable.content* }
+help.attlist &= event.handler.attrs
+link.element = element link { link.attlist, input* }
+link.attlist &=
+  cache.attrs,
+  next.attrs,
+  attribute fetchaudio { uri }?,
+  attribute dtmf { text }?,
+  throw.attrs
+noinput.element =
+  element noinput { noinput.attlist, executable.content* }
+noinput.attlist &= event.handler.attrs
+nomatch.element =
+  element nomatch { nomatch.attlist, executable.content* }
+nomatch.attlist &= event.handler.attrs
+throw.element = element throw { throw.attlist, empty }
+throw.attlist &= throw.attrs
+# ============================= Grammar Input =============================
+
+# definitions adapted from SRGS 1.0 DTD
+rule-expansion =
+  text
+  | token.element
+  | ruleref.element
+  | item.element
+  | one-of.element
+  | tag.element
+ruleref.element = element ruleref { ruleref.attlist, empty }
+ruleref.attlist &=
+  attribute uri { uri }?,
+  attribute type { text }?,
+  attribute special { "NULL" | "VOID" | "GARBAGE" }?
+token.element = element token { token.attlist, text }
+token.attlist &= attribute xml:lang { xsd:NMTOKEN }?
+tag.element = element tag { tag.attlist, text }
+tag.attlist &= empty
+one-of.element = element one-of { one-of.attlist, item.element+ }
+one-of.attlist &= attribute xml:lang { xsd:NMTOKEN }?
+item.element = element item { item.attlist, rule-expansion* }
+item.attlist &=
+  attribute repeat { xsd:NMTOKEN }?,
+  attribute repeat-prob { xsd:NMTOKEN }?,
+  attribute weight { xsd:NMTOKEN }?,
+  attribute xml:lang { xsd:NMTOKEN }?
+rule.element =
+  element rule { rule.attlist, (rule-expansion | example.element)* }
+rule.attlist &=
+  attribute id { xsd:ID },
+  [ a:defaultValue = "private" ]
+  attribute scope { "private" | "public" }?
+example.element = element example { example.attlist, text }
+example.attlist &= empty
+lexicon.element = element lexicon { lexicon.attlist, empty }
+lexicon.attlist &=
+  attribute uri { uri },
+  attribute type { text }?
+# Changes to SRGS 1.0 DTD grammar element:
+# - mixed, unordered content model 
+# - addition of 'scope', 'src', 'type', 'weight' and caching attributes
+# - 'version' attribute is optional
+# - removal of xmlns, xmlns:xsi, and xsi:schemaLocation attributes
+grammar.element =
+  element grammar {
+    grammar.attlist,
+    (text
+     | meta.element
+     | metadata.element
+     | lexicon.element
+     | rule.element
+     | tag.element)*
+  }
+grammar.attlist &=
+  attribute scope { scope }?,
+  attribute src { uri }?,
+  attribute srcexpr { expression }?,
+  attribute type { text }?,
+  attribute weight { text }?,
+  cache.attrs,
+  attribute tag-format { uri }?,
+  attribute xml:base { uri }?,
+  attribute version { xsd:NMTOKEN }?,
+  attribute xml:lang { xsd:NMTOKEN }?,
+  attribute root { xsd:IDREF }?,
+  [ a:defaultValue = "voice" ] attribute mode { "voice" | "dtmf" }?
+# ============================= Audio Input =============================
+record.element =
+  element record {
+    record.attlist,
+    (audio
+     | event.handler
+     | filled.element
+     | input
+     | prompt.element
+     | property.element)*
+  }
+record.attlist &=
+  item.attrs,
+  attribute type { text }?,
+  [ a:defaultValue = "false" ] attribute beep { boolean }?,
+  attribute maxtime { duration }?,
+  [ a:defaultValue = "true" ] attribute modal { boolean }?,
+  attribute finalsilence { duration }?,
+  [ a:defaultValue = "true" ] attribute dtmfterm { boolean }?
+# ============================ Call Control ============================
+disconnect.element = element disconnect { disconnect.attlist, empty }
+disconnect.attlist &= attribute namelist { variable.names }?
+transfer.element =
+  element transfer {
+    transfer.attlist,
+    (audio
+     | event.handler
+     | filled.element
+     | input
+     | prompt.element
+     | property.element)*
+  }
+transfer.attlist &=
+  item.attrs,
+  attribute dest { uri }?,
+  attribute destexpr { expression }?,
+  attribute bridge { boolean }?,
+  attribute type { xsd:NMTOKEN }?,
+  attribute connecttimeout { duration }?,
+  attribute maxtime { duration }?,
+  attribute transferaudio { uri }?,
+  attribute aai { text }?,
+  attribute aaiexpr { expression }?
+# ============================ Control Flow ============================
+if.attrs = attribute cond { expression }
+if.element =
+  element if {
+    if.attlist, (executable.content | elseif.element | else.element)*
+  }
+if.attlist &= if.attrs
+elseif.element = element elseif { elseif.attlist, empty }
+elseif.attlist &= if.attrs
+else.element = element else { else.attlist, empty }
+else.attlist &= empty
+exit.element = element exit { exit.attlist, empty }
+exit.attlist &=
+  attribute expr { expression }?,
+  attribute namelist { variable.names }?
+filled.element = element filled { filled.attlist, executable.content* }
+filled.attlist &=
+  attribute mode { "any" | "all" }?,
+  attribute namelist { restrictedvariable.names }?
+# executable content + contents of prompt
+foreach.element =
+  element foreach {
+    foreach.attlist,
+    (executable.content | sentence-elements | structure)*
+  }
+foreach.attlist &=
+  attribute item { restrictedvariable.name },
+  attribute array { text }
+goto.element = element goto { goto.attlist, empty }
+goto.attlist &=
+  cache.attrs,
+  next.attrs,
+  attribute fetchaudio { uri }?,
+  attribute expritem { expression }?,
+  attribute nextitem { restrictedvariable.name }?
+param.element = element param { param.attlist, empty }
+param.attlist &=
+  attribute name { xsd:NMTOKEN },
+  attribute expr { expression }?,
+  attribute value { text }?,
+  [ a:defaultValue = "data" ] attribute valuetype { "data" | "ref" }?,
+  attribute type { text }?
+return.element = element return { return.attlist, empty }
+return.attlist &=
+  attribute namelist { variable.names }?,
+  throw.attrs
+subdialog.element =
+  element subdialog {
+    subdialog.attlist,
+    (audio
+     | event.handler
+     | filled.element
+     | param.element
+     | prompt.element
+     | property.element)*
+  }
+subdialog.attlist &=
+  item.attrs,
+  attribute src { uri }?,
+  attribute srcexpr { expression }?,
+  cache.attrs,
+  attribute fetchaudio { uri }?,
+  submit.attrs
+submit.element = element submit { submit.attlist, empty }
+submit.attlist &=
+  cache.attrs,
+  next.attrs,
+  attribute fetchaudio { uri }?,
+  submit.attrs
+# ========================== Miscellaneous ==============================
+data.element = element data { data.attlist, empty }
+data.attlist &=
+  attribute name { restrictedvariable.name }?,
+  attribute src { uri }?,
+  attribute srcexpr { expression }?,
+  attribute fetchaudio { uri }?,
+  submit.attrs,
+  cache.attrs
+log.element = element log { log.attlist, (text | value.element)* }
+log.attlist &=
+  attribute label { text }?,
+  attribute expr { expression }?
+object.element =
+  element object {
+    object.attlist,
+    (audio
+     | event.handler
+     | filled.element
+     | param.element
+     | prompt.element
+     | property.element)*
+  }
+object.attlist &=
+  item.attrs,
+  cache.attrs,
+  attribute classid { uri }?,
+  attribute codebase { uri }?,
+  attribute data { uri }?,
+  attribute type { text }?,
+  attribute codetype { text }?,
+  attribute archive { uri }?
+property.element = element property { property.attlist, empty }
+property.attlist &=
+  attribute name { xsd:NMTOKEN },
+  attribute value { text }
+script.element = element script { script.attlist, text }
+script.attlist &=
+  attribute src { uri }?,
+  attribute srcexpr { expression }?,
+  attribute charset { text }?,
+  cache.attrs
+start = vxml.element
+any =
+  (element * {
+     attribute * { text }*,
+     any
+   }
+   | text)*

@@ -473,50 +473,29 @@ window dedicated for this buffer."
   (interactive)
   (setq keyboard-translate-table
         (make-char-table 'keyboard-translate-table nil))
-                                        ; F
-  (aset keyboard-translate-table 102 5792)
-                                        ; U
-  (aset keyboard-translate-table 117 5794)
-                                        ; A
-  (aset keyboard-translate-table 97 5800)
-                                        ; R
-  (aset keyboard-translate-table 114 5792)
-                                        ; C, K, Q
-  (aset keyboard-translate-table 99 5810)
+                                        
+  (aset keyboard-translate-table 102 5792) ; F
+  (aset keyboard-translate-table 97 5800)  ; A
+  (aset keyboard-translate-table 114 5792) ; R
+  (aset keyboard-translate-table 99 5810)  ; C, K, Q
   (aset keyboard-translate-table 107 5810)
   (aset keyboard-translate-table 113 5810)
-                                        ; G
-  (aset keyboard-translate-table 103 5815)
-                                        ; W
-  (aset keyboard-translate-table 119 5817)
-                                        ; H
-  (aset keyboard-translate-table 104 5818)
-                                        ; N
-  (aset keyboard-translate-table 110 5822)
-                                        ; I
-  (aset keyboard-translate-table 105 5825)
-                                        ; J
-  (aset keyboard-translate-table 106 5827)
-                                        ; P
-  (aset keyboard-translate-table 112 5832)
-                                        ; Z
-  (aset keyboard-translate-table 122 5833)
-                                        ; S
-  (aset keyboard-translate-table 115 5835)
-                                        ; T
-  (aset keyboard-translate-table 116 5839)
-                                        ; B
-  (aset keyboard-translate-table 98 5842)
-                                        ; E
-  (aset keyboard-translate-table 101 5846)
-                                        ; M
-  (aset keyboard-translate-table 109 5847)
-                                        ; L
-  (aset keyboard-translate-table 108 5850)
-                                        ; O
-  (aset keyboard-translate-table 111 5855)
-                                        ; D
-  (aset keyboard-translate-table 100 5854)
+  (aset keyboard-translate-table 103 5815) ; G
+  (aset keyboard-translate-table 119 5817) ; W
+  (aset keyboard-translate-table 104 5818) ; H
+  (aset keyboard-translate-table 110 5822) ; N
+  (aset keyboard-translate-table 105 5825) ; I
+  (aset keyboard-translate-table 106 5827) ; J
+  (aset keyboard-translate-table 112 5832) ; P
+  (aset keyboard-translate-table 122 5833) ; Z
+  (aset keyboard-translate-table 115 5835) ; S
+  (aset keyboard-translate-table 116 5839) ; T
+  (aset keyboard-translate-table 98 5842)  ; B
+  (aset keyboard-translate-table 101 5846) ; E
+  (aset keyboard-translate-table 109 5847) ; M
+  (aset keyboard-translate-table 108 5850) ; L
+  (aset keyboard-translate-table 111 5855) ; O
+  (aset keyboard-translate-table 100 5854) ; D
 
   (global-set-key (kbd "<f12>") 'runic-write-off)
 
