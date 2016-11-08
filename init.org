@@ -259,6 +259,25 @@ I always use UTF-8, so lets let Emacs know.
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 #+END_SRC
 
+*** Whitespace mode
+
+I like to see special chars, specially trailing whitespaces.
+Fortunately, there's a mode for that.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package whitespace
+    :config
+    (progn
+      (setq whitespace-display-mappings
+            ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
+            '(
+              (space-mark 32 [183] [46]) ; 32 SPACE, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
+              (newline-mark 10 [182 10]) ; 10 LINE FEED
+              (tab-mark 9 [9655 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
+              ))
+      (global-whitespace-mode)))
+#+END_SRC
+
 *** Killing
 
 =C-k= kills a line if none selected.
@@ -562,7 +581,7 @@ Template for saving my recipes.
   (org-metaright)
   (insert "Ingredientes")
   (org-meta-return)
-  (insert "Preparaci�n")
+  (insert "Preparación")
   (search-backward recipe-name)
   (setq source (read-string "Fuente: "))
   (org-set-property "Fuente" source)
@@ -842,16 +861,21 @@ proper syntax.
 First, lets add =<form>= ids to the imenu bar and set up ECB layout.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-(add-hook 'nxml-mode-hook
-          (lambda ()
-            (set-variable
-             'imenu-generic-expression
-             (list
-              (list
-               nil
-               "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
-            (imenu-add-to-menubar "XML")
-            (setq ecb-layout-name "FONETIC-layout")))
+  (use-package nxml-mode
+    :config
+    (progn
+      (add-to-list 'rng-schema-locating-files
+                   "~/.emacs.d/nxml-schemas/schemas.xml")
+      (add-hook 'nxml-mode-hook
+                (lambda ()
+                  (set-variable
+                   'imenu-generic-expression
+                   (list
+                    (list
+                     nil
+                     "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
+                  (imenu-add-to-menubar "XML")
+                  (setq ecb-layout-name "FONETIC-layout")))))
 #+END_SRC
 
 Then we set up the schema files and hideshow mode. This way I can hide
@@ -868,7 +892,6 @@ elements with =C-c h=.
                    sgml-skip-tag-forward
                    nil)))
   (add-hook 'nxml-mode-hook 'hs-minor-mode)
-  (add-to-list 'rng-schema-locating-files "~/.emacs.d/nxml-schemas/schemas.xml")
 #+END_SRC
 
 A VXML project has lots of uninteresting files (audios, grammars, etc.),

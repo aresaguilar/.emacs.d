@@ -108,6 +108,18 @@
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
+(use-package whitespace
+  :config
+  (progn
+    (setq whitespace-display-mappings
+          ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
+          '(
+            (space-mark 32 [183] [46]) ; 32 SPACE, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
+            (newline-mark 10 [182 10]) ; 10 LINE FEED
+            (tab-mark 9 [9655 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
+            ))
+    (global-whitespace-mode)))
+
 (defun slick-cut (beg end)
   (interactive
    (if mark-active
@@ -455,16 +467,21 @@ window dedicated for this buffer."
           (lambda () (TeX-fold-mode 1)))    ; Automatically activate TeX-fold-mode.
 (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
 
-(add-hook 'nxml-mode-hook
-          (lambda ()
-            (set-variable
-             'imenu-generic-expression
-             (list
-              (list
-               nil
-               "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
-            (imenu-add-to-menubar "XML")
-            (setq ecb-layout-name "FONETIC-layout")))
+(use-package nxml-mode
+  :config
+  (progn
+    (add-to-list 'rng-schema-locating-files
+                 "~/.emacs.d/nxml-schemas/schemas.xml")
+    (add-hook 'nxml-mode-hook
+              (lambda ()
+                (set-variable
+                 'imenu-generic-expression
+                 (list
+                  (list
+                   nil
+                   "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
+                (imenu-add-to-menubar "XML")
+                (setq ecb-layout-name "FONETIC-layout")))))
 
 (use-package hideshow
   :config
@@ -476,7 +493,6 @@ window dedicated for this buffer."
                  sgml-skip-tag-forward
                  nil)))
 (add-hook 'nxml-mode-hook 'hs-minor-mode)
-(add-to-list 'rng-schema-locating-files "~/.emacs.d/nxml-schemas/schemas.xml")
 
 (setq projectile-globally-ignored-directories
       (append '(
