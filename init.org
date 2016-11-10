@@ -1047,6 +1047,7 @@ work), making this section necessary.
 #+END_SRC
 
 ** Things that I want to try
+*** TODO Magit
 *** TODO Smartparens
 
 #+BEGIN_SRC emacs-lisp :tangle yes
