@@ -19,23 +19,26 @@ This file gets tangled with the command =M-x org-babel-tangle= (=C-c C-v t=).
 
 Following packages must be installed in your emacs:
 
-    - use-package
-    - helm
-    - monokai-theme
+#+NAME: required-packages
     - auto-complete
-    - ecb
-    - yasnippet
     - clipmon
-    - undo-tree
-    - smart-mode-line
-    - projectile
-    - helm-projectile
     - company
-    - multiple-cursors
-    - fill-column-indicator
+    - ecb
     - ess
-    - persistent-scratch
     - expand-region
+    - fill-column-indicator
+    - helm
+    - helm-projectile
+    - key-chord
+    - magit
+    - monokai-theme
+    - multiple-cursors
+    - persistent-scratch
+    - projectile
+    - smart-mode-line
+    - undo-tree
+    - use-package
+    - yasnippet
 
 Also, if you plan on using this init file in Windows, you sould also
 install the following packages as well:
@@ -1060,6 +1063,10 @@ work), making this section necessary.
 #+END_SRC
 
 ** Things that I want to try
+*** TODO Monkey
+
+Monkey is like Magit for HG.
+
 *** TODO ORG Pomodoro
 *** TODO Smartparens
 
