@@ -1,0 +1,12 @@
+auto-save-list/**
+
+elpa/**
+
+server/**
+
+custom-settings.el
+custom-settings.el.before_ecb_2.50
+projectile.cache
+projectile-bookmarks.eld
+recentf
+savehist
