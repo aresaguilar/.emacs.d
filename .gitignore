@@ -4,6 +4,8 @@ elpa/**
 
 server/**
 
+.persistent-scratch
+
 custom-settings.el
 custom-settings.el.before_ecb_2.50
 projectile.cache

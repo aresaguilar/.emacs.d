@@ -656,6 +656,19 @@ Let's make clear where that 80 column is, in the global way.
     (my-global-fci-mode 1))
 #+END_SRC
 
+*** Magit
+
+I'm learning Magit. There's a very good starters tutorial [[https://github.com/jkitchin/magit-tutorial][here]].
+Currently, I'm using =C-x g= to run the command =magit-status=,
+and =s= to stage, =c c= to commit and =P p= to push. Sometimes
+I have to use =l l= to see the short log.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package magit
+    :config
+    (global-set-key (kbd "C-x g") 'magit-status))
+#+END_SRC
+
 *** CTAGS
 
 Etags allow to visit a symbol's definition using =M-.=
@@ -1047,7 +1060,7 @@ work), making this section necessary.
 #+END_SRC
 
 ** Things that I want to try
-*** TODO Magit
+*** TODO ORG Pomodoro
 *** TODO Smartparens
 
 #+BEGIN_SRC emacs-lisp :tangle yes

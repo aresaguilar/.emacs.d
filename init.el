@@ -345,6 +345,10 @@ point reaches the beginning or end of the buffer, stop there."
   (define-globalized-minor-mode my-global-fci-mode fci-mode turn-on-fci-mode)
   (my-global-fci-mode 1))
 
+(use-package magit
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status))
+
 (setq path-to-ctags "ctags")
 (defun create-tags (dir-name)
   "Create tags file"
