@@ -139,7 +139,7 @@
 
 (use-package expand-region
   :defer t
-  :bind ("C-=" . er/expand-region))
+  :bind ("C-+" . er/expand-region))
 
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)

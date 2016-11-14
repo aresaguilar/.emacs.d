@@ -318,12 +318,12 @@ selected.
 *** Expand region
 
 This is something I have to get the hang of too.
-It gradually expands the selection, and it's bound to =C-==
+It gradually expands the selection, and it's bound to =C-+=
 
 #+begin_src emacs-lisp :tangle yes
   (use-package expand-region
     :defer t
-    :bind ("C-=" . er/expand-region))
+    :bind ("C-+" . er/expand-region))
 #+end_src
 
 *** Multiple cursors
