@@ -25,12 +25,14 @@ Following packages must be installed in your emacs:
     - company
     - ecb
     - ess
+    - ess-R-data-view
     - expand-region
     - fill-column-indicator
     - helm
     - helm-projectile
     - key-chord
     - magit
+    - monky
     - monokai-theme
     - multiple-cursors
     - persistent-scratch
@@ -43,6 +45,7 @@ Following packages must be installed in your emacs:
 Also, if you plan on using this init file in Windows, you sould also
 install the following packages as well:
 
+#+NAME: required-packages-windows
     - cygwin-mount
 
 ** Starting up
@@ -659,7 +662,8 @@ Let's make clear where that 80 column is, in the global way.
     (my-global-fci-mode 1))
 #+END_SRC
 
-*** Magit
+*** VCS
+**** Magit
 
 I'm learning Magit. There's a very good starters tutorial [[https://github.com/jkitchin/magit-tutorial][here]].
 Currently, I'm using =C-x g= to run the command =magit-status=,
@@ -670,6 +674,17 @@ I have to use =l l= to see the short log.
   (use-package magit
     :config
     (global-set-key (kbd "C-x g") 'magit-status))
+#+END_SRC
+
+**** Monky
+
+Monky is like Magit for HG. I use =monky-status= with the keybinding
+=C-x G=
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package monky
+    :config
+    (global-set-key (kbd "C-x g") 'monky-status))
 #+END_SRC
 
 *** CTAGS
@@ -836,12 +851,21 @@ ESS (Emacs Speaks Statistics) is a package that provides functions
 for many statistical languages. I only use the R part.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
+  ;; ESS Package
   (use-package ess-site
     :commands R)
   ; Open *.r in R-mode
   (add-to-list 'auto-mode-alist '("\\.r\\'" . R-mode))
   ; Make ECB default layout left3
   (add-hook 'R-mode-hook (lambda () (setq ecb-layout-name "left3")))
+#+END_SRC
+
+I also like to see what a variable holds. I use =C-c v= for that.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ess-R-data-view
+    :config
+    (define-key ess-mode-map (kbd "C-c v") 'ess-R-dv-ctable))
 #+END_SRC
 
 *** LaTeX
@@ -1063,10 +1087,6 @@ work), making this section necessary.
 #+END_SRC
 
 ** Things that I want to try
-*** TODO Monkey
-
-Monkey is like Magit for HG.
-
 *** TODO ORG Pomodoro
 *** TODO Smartparens
 
