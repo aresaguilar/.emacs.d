@@ -168,7 +168,7 @@ Repeated invocations toggle between the two most recently open buffers."
 (use-package key-chord
   :init
   (progn
-    (setq key-chord-one-key-delay 0.16)
+    (setq key-chord-one-key-delay 0.20)
     (key-chord-mode 1)
     (key-chord-define-global "uu" 'undo)
     (key-chord-define-global "JJ" 'switch-to-previous-buffer)
@@ -355,7 +355,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package monky
   :config
-  (global-set-key (kbd "C-x g") 'monky-status))
+  (global-set-key (kbd "C-x G") 'monky-status))
 
 (setq path-to-ctags "ctags")
 (defun create-tags (dir-name)
@@ -455,15 +455,15 @@ window dedicated for this buffer."
 
 ;; ESS Package
 (use-package ess-site
-  :commands R)
+  :commands R
+  :config
+  (use-package ess-R-data-view
+    :config
+    (define-key ess-mode-map (kbd "C-c v") 'ess-R-dv-ctable)))
 ; Open *.r in R-mode
 (add-to-list 'auto-mode-alist '("\\.r\\'" . R-mode))
 ; Make ECB default layout left3
 (add-hook 'R-mode-hook (lambda () (setq ecb-layout-name "left3")))
-
-(use-package ess-R-data-view
-  :config
-  (define-key ess-mode-map (kbd "C-c v") 'ess-R-dv-ctable))
 
 ;; Force LaTeX mode for .tex files
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-mode))
