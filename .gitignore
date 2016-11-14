@@ -4,6 +4,8 @@ elpa/**
 
 server/**
 
+backups/**
+
 .persistent-scratch
 
 custom-settings.el

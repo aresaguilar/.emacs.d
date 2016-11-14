@@ -330,7 +330,7 @@ It gradually expands the selection, and it's bound to =C-+=
 *** Multiple cursors
 
 Sublime-like editing with multiple cursors.
-To activate it, mark lines and hit ==.
+To activate it, mark lines and hit =CC=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package multiple-cursors
