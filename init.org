@@ -35,6 +35,7 @@ Following packages must be installed in your emacs:
     - monky
     - monokai-theme
     - multiple-cursors
+    - org-pomodoro
     - persistent-scratch
     - projectile
     - smart-mode-line
@@ -523,6 +524,18 @@ Here are the Org files I use.
  ;; Do not use S-<arrow> (used in windmove)
  '(org-replace-disputed-keys t)
  )
+#+END_SRC
+
+*** Pomodoro
+
+I'm starting to use the [[pomodorotechnique.com][Pomodoro Technique]] to stay focused and be more
+productive at work. To start a pomodoro, move point to a task and call
+=org-pomodoro=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package org-pomodoro
+    :config
+    (setq org-pomodoro-length 20))
 #+END_SRC
 
 *** Cook mode
@@ -1087,7 +1100,6 @@ work), making this section necessary.
 #+END_SRC
 
 ** Things that I want to try
-*** TODO ORG Pomodoro
 *** TODO Smartparens
 
 #+BEGIN_SRC emacs-lisp :tangle yes

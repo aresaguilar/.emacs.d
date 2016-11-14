@@ -239,6 +239,10 @@ point reaches the beginning or end of the buffer, stop there."
  '(org-replace-disputed-keys t)
  )
 
+(use-package org-pomodoro
+  :config
+  (setq org-pomodoro-length 20))
+
 ;; source: http://lebensverrueckt.haktar.org/articles/org-mode-Food/
 (defun food/gen-shopping-list ()
   "Generate shopping list from COCINAR items."
