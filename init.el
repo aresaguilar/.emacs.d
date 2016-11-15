@@ -118,7 +118,7 @@
             (newline-mark 10 [182 10]) ; 10 LINE FEED
             (tab-mark 9 [9655 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
             ))
-    (global-whitespace-mode)))
+    (set-face-attribute 'whitespace-space nil :foreground "#272822")))
 
 (defun slick-cut (beg end)
   (interactive
@@ -148,6 +148,8 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)) ; one line at a time
       mouse-wheel-progressive-speed nil            ; don't accelerate
       mouse-wheel-follow-mouse 't                  ; scroll window under mouse
+      scroll-conservatively 10000
+      auto-window-vscroll nil
  )
 
 (windmove-default-keybindings)
