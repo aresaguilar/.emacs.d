@@ -615,7 +615,10 @@ window dedicated for this buffer."
         ispell-personal-dictionary "~/.ispell"
   ; FIX for find
         find-program "C:\\cygwin64\\bin\\find.exe"
-        gc-cons-threshold (* 100 1024 1024))   ; 100 mb
+        gc-cons-threshold (* 100 1024 1024)   ; 100 mb
+  ; FIX PATH
+        exec-path (append '("C:\\cygwin64\\bin") exec-path))
+  (setenv "PATH" (concat "C:\\cygwin64\\bin;" (getenv "PATH")))
   ; FIX for TRAMP
   (set-default 'tramp-auto-save-directory "~/AppData/Local/Temp")
   (set-default 'tramp-default-method "plink")

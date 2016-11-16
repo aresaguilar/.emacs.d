@@ -50,12 +50,16 @@ install the following packages as well:
 #+NAME: required-packages-windows
     - cygwin-mount
 
+#+BEGIN_SRC emacs-lisp :var package-list=required-packages
+  (mapc 'package-install package-list)
+#+END_SRC
+
 ** Starting up
 
 Everything that should be loaded at startup is here.
 Changes to env variables should be done here.
 
-#+begin_src emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle yes
 (package-initialize)
 (setq package-enable-at-startup nil)
 (setq custom-file "~/.emacs.d/custom-settings.el")
@@ -1085,7 +1089,10 @@ work), making this section necessary.
           ispell-personal-dictionary "~/.ispell"
     ; FIX for find
           find-program "C:\\cygwin64\\bin\\find.exe"
-          gc-cons-threshold (* 100 1024 1024))   ; 100 mb
+          gc-cons-threshold (* 100 1024 1024)   ; 100 mb
+    ; FIX PATH
+          exec-path (append '("C:\\cygwin64\\bin") exec-path))
+    (setenv "PATH" (concat "C:\\cygwin64\\bin;" (getenv "PATH")))
     ; FIX for TRAMP
     (set-default 'tramp-auto-save-directory "~/AppData/Local/Temp")
     (set-default 'tramp-default-method "plink")
