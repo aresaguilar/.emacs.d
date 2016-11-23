@@ -250,13 +250,13 @@ point reaches the beginning or end of the buffer, stop there."
 (setq org-capture-templates
       '(("a" "ARES Task" entry (file+headline "ARES.org" "TAREAS")
          "** TODO %?\n   %i\n"
-         :empty-lines 1 :clock-keep t :kill-buffer t)
+         :empty-lines 1 :clock-keep t :kill-buffer t :prepend t)
         ("w" "WORK Task" entry (file+headline "trabajo.org" "TAREAS")
          "** TODO %?\n   %i\n"
-         :empty-lines 1 :clock-keep t :kill-buffer t)
+         :empty-lines 1 :clock-keep t :kill-buffer t :prepend t)
         ("t" "TICKET" entry (file+headline "trabajo.org" "TICKETS")
-         "** TODO [[https://10.0.1.151:3001/issues/%c][%^{Descripcion}]]\n   DEADLINE: %^t\n   :PROPERTIES:\n   :TICKET:   %c\n%^{BRANCH}p"
-          :empty-lines 1 :clock-keep t :kill-buffer t :immediate-finish t)
+         "** TODO [[https://10.0.1.151:3001/issues/%c][%^{Descripcion}]]\n   DEADLINE: %^t\n   :PROPERTIES:\n   :TICKET:   %c\n   :END:\n%^{BRANCH}p"
+          :empty-lines 1 :clock-keep t :kill-buffer t :immediate-finish t :prepend t)
         ))
 
 (use-package org-pomodoro
