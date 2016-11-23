@@ -503,11 +503,11 @@ Here are the Org files I use.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq org-directory "~/ORG")
-  (setq org-default-notes-file "~/ORG/notas.org")
 #+END_SRC
 
 *** General configuration
 
+Let's start with some general configuration:
 #+BEGIN_SRC emacs-lisp :tangle yes
 (require 'auto-complete-config)
 ;; Make auto-complete work in org
@@ -531,6 +531,42 @@ Here are the Org files I use.
  ;; Do not use S-<arrow> (used in windmove)
  '(org-replace-disputed-keys t)
  )
+#+END_SRC
+
+I like to have my main ORG file handy, so I have a shortcut that opens
+it, bound to =C-c a=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (global-set-key (kbd "C-c a")
+                  (lambda () (interactive) (find-file "~/ORG/ARES.org")))
+#+END_SRC
+
+I use ORG refile to quickly jump to a heading (=C-u C-c C-w=) and to
+move trees around my org-agenda-files (=C-c C-w=).
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+#+END_SRC
+
+*** ORG Capture
+
+I use [[http://orgmode.org/manual/Capture.html][ORG capture]] to quickly take notes from wherever I am. I have it
+bound to a keybinding, =C-c c=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (setq org-default-notes-file "~/ORG/notas.org")
+  (setq org-capture-templates
+        '(("a" "ARES Task" entry (file+headline "ARES.org" "TAREAS")
+           "** TODO %?\n   %i\n"
+           :empty-lines 1 :clock-keep t :kill-buffer t)
+          ("w" "WORK Task" entry (file+headline "trabajo.org" "TAREAS")
+           "** TODO %?\n   %i\n"
+           :empty-lines 1 :clock-keep t :kill-buffer t)
+          ("t" "TICKET" entry (file+headline "trabajo.org" "TICKETS")
+           "** TODO [[https://10.0.1.151:3001/issues/%c][%^{Descripcion}]]\n   DEADLINE: %^t\n   :PROPERTIES:\n   :TICKET:   %c\n%^{BRANCH}p"
+            :empty-lines 1 :clock-keep t :kill-buffer t :immediate-finish t)
+          ))
 #+END_SRC
 
 *** Pomodoro

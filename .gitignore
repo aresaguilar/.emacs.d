@@ -8,6 +8,8 @@ backups/**
 
 eshell/**
 
+url/**
+
 .persistent-scratch
 
 custom-settings.el

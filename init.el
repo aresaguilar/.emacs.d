@@ -216,7 +216,6 @@ point reaches the beginning or end of the buffer, stop there."
 (setq browse-url-browser-function 'w3m-browse-url)
 
 (setq org-directory "~/ORG")
-(setq org-default-notes-file "~/ORG/notas.org")
 
 (require 'auto-complete-config)
 ;; Make auto-complete work in org
@@ -240,6 +239,25 @@ point reaches the beginning or end of the buffer, stop there."
  ;; Do not use S-<arrow> (used in windmove)
  '(org-replace-disputed-keys t)
  )
+
+(global-set-key (kbd "C-c a")
+                (lambda () (interactive) (find-file "~/ORG/ARES.org")))
+
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-default-notes-file "~/ORG/notas.org")
+(setq org-capture-templates
+      '(("a" "ARES Task" entry (file+headline "ARES.org" "TAREAS")
+         "** TODO %?\n   %i\n"
+         :empty-lines 1 :clock-keep t :kill-buffer t)
+        ("w" "WORK Task" entry (file+headline "trabajo.org" "TAREAS")
+         "** TODO %?\n   %i\n"
+         :empty-lines 1 :clock-keep t :kill-buffer t)
+        ("t" "TICKET" entry (file+headline "trabajo.org" "TICKETS")
+         "** TODO [[https://10.0.1.151:3001/issues/%c][%^{Descripcion}]]\n   DEADLINE: %^t\n   :PROPERTIES:\n   :TICKET:   %c\n%^{BRANCH}p"
+          :empty-lines 1 :clock-keep t :kill-buffer t :immediate-finish t)
+        ))
 
 (use-package org-pomodoro
   :config
