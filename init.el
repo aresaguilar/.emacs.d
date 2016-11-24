@@ -256,12 +256,15 @@ point reaches the beginning or end of the buffer, stop there."
          :empty-lines 1 :clock-keep t :kill-buffer t :prepend t)
         ("t" "TICKET" entry (file+headline "trabajo.org" "TICKETS")
          "** TODO [[https://10.0.1.151:3001/issues/%c][%^{Descripcion}]]\n   DEADLINE: %^t\n   :PROPERTIES:\n   :TICKET:   %c\n   :END:\n%^{BRANCH}p"
-          :empty-lines 1 :clock-keep t :kill-buffer t :immediate-finish t :prepend t)
+         :empty-lines 1 :clock-keep t :kill-buffer t :immediate-finish t :prepend t)
+        ("p" "Required Package" item (file+headline "~/.emacs.d/init.org" "Prerequisites")
+         "%i%?\n"
+         :clock-keep t :kill-buffer t)
         ))
 
 (use-package org-pomodoro
   :config
-  (setq org-pomodoro-length 20))
+  (setq org-pomodoro-length 15))
 
 ;; source: http://lebensverrueckt.haktar.org/articles/org-mode-Food/
 (defun food/gen-shopping-list ()
