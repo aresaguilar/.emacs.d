@@ -11,6 +11,7 @@ eshell/**
 url/**
 
 .persistent-scratch
+.mc-lists.el
 
 custom-settings.el
 custom-settings.el.before_ecb_2.50

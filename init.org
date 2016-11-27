@@ -1029,6 +1029,12 @@ so lets make sure =projectile= and =grep= ignore them.
               grep-find-ignored-files))
 #+END_SRC
 
+** Messaging
+*** Jabber
+
+Jabber settings.
+
+
 ** Fun
 *** Music
 
