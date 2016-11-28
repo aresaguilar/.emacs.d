@@ -355,18 +355,18 @@ Emacs default scrolling sucks. Fortunately, it is very easy to fix.
 
 *** Ace Window
 
-=[[https://github.com/abo-abo/ace-window][ace-window]]= let's you move between open windows using a key press after
+[[https://github.com/abo-abo/ace-window][ace-window]] let's you move between open windows using a key press after
 the command. I have it bound to a [[Key%20chords][key-chord]], =jw=.
 
 When in =ace-window= mode, you can change the action with a modifier key:
 
-    - <kbd>x</kbd> - delete window
-    - <kbd>m</kbd> - swap (move) window
-    - <kbd>v</kbd> - split window vertically
-    - <kbd>b</kbd> - split window horizontally
-    - <kbd>n</kbd> - select the previous window
-    - <kbd>i</kbd> - maximize window (select which window)
-    - <kbd>o</kbd> - maximize current window
+| =x= | delete window                         |
+| =m= | swap (move) window                    |
+| =v= | split window vertically               |
+| =b= | split window horizontally             |
+| =n= | select the previous window            |
+| =i= | maximize window (select which window) |
+| =o= | maximize current window               |
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ace-window
@@ -1152,7 +1152,7 @@ Next, lets define the syntax and faces for the font-lock highlighting.
   (defun fonlog-font-lock-config ()
     "Realiza la configuración inicial de font-lock (subrayado) del modo fonlog."
     (setq-local font-lock-defaults '(fonlog-highlights))   ; Configuración de highlight
-    (setq-local font-lock-keywords-only t)                 ; No subrayar strings ni comentarios
+    (setq font-lock-keywords-only t)                 ; No subrayar strings ni comentarios
     )
 #+END_SRC
 

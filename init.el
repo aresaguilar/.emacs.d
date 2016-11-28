@@ -663,7 +663,7 @@ window dedicated for this buffer."
 (defun fonlog-font-lock-config ()
   "Realiza la configuración inicial de font-lock (subrayado) del modo fonlog."
   (setq-local font-lock-defaults '(fonlog-highlights))   ; Configuración de highlight
-  (setq-local font-lock-keywords-only t)                 ; No subrayar strings ni comentarios
+  (setq font-lock-keywords-only t)                 ; No subrayar strings ni comentarios
   )
 
 (defun fonlog-config-log-buffer ()
