@@ -8,6 +8,8 @@
   (package-refresh-contents)
 )
 (setq inhibit-startup-screen t)
+;; Always try to install a package if not present
+(setq use-package-always-ensure t)
 
 (setq user-full-name "Ares Aguilar"
       user-mail-address "aresaguilarsotos@gmail.com")
@@ -120,13 +122,9 @@
             ))
     (set-face-attribute 'whitespace-space nil :foreground "#272822")))
 
-(defun slick-cut (beg end)
-  (interactive
-   (if mark-active
-       (list (region-beginning) (region-end))
-     (list (line-beginning-position) (line-beginning-position 2)))))
-
-(advice-add 'kill-region :before #'slick-cut)
+(use-package avy-zap
+  :bind (("M-z" . avy-zap-up-to-char-dwim)
+         ("M-Z" . avy-zap-to-char-dwim)))
 
 (defun slick-copy (beg end)
   (interactive
@@ -152,14 +150,12 @@
       auto-window-vscroll nil
  )
 
-(windmove-default-keybindings)
+(use-package ace-window
+  :config (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(add-hook 'org-shiftup-final-hook 'windmove-up)
-(add-hook 'org-shiftleft-final-hook 'windmove-left)
-(add-hook 'org-shiftdown-final-hook 'windmove-down)
-(add-hook 'org-shiftright-final-hook 'windmove-right)
-
-(use-package ace-jump-mode)
+(use-package avy
+  :bind ("M-g g" . avy-goto-line)
+  :config (define-key isearch-mode-map (kbd "C-'") 'avy-isearch))
 
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer.
@@ -170,13 +166,14 @@ Repeated invocations toggle between the two most recently open buffers."
 (use-package key-chord
   :init
   (progn
-    (setq key-chord-one-key-delay 0.20)
+    (setq key-chord-one-key-delay 0.15)
     (key-chord-mode 1)
     (key-chord-define-global "uu" 'undo)
     (key-chord-define-global "JJ" 'switch-to-previous-buffer)
-    (key-chord-define-global "jk" 'ace-jump-char-mode)
-    (key-chord-define-global "jw" 'ace-jump-word-mode)
-    (key-chord-define-global "jl" 'ace-jump-line-mode)
+    (key-chord-define-global "jj" 'avy-goto-char-timer)
+    (key-chord-define-global "jk" 'avy-goto-char)
+    (key-chord-define-global "jl" 'avy-goto-word-or-subword-1)
+    (key-chord-define-global "jw" 'ace-window)
     (key-chord-define-global "CC" 'mc/edit-lines)))
 
 (defun my/smarter-move-beginning-of-line (arg)
@@ -238,7 +235,8 @@ point reaches the beginning or end of the buffer, stop there."
  '(org-reverse-note-order t)
  ;; Do not use S-<arrow> (used in windmove)
  '(org-replace-disputed-keys t)
- )
+ ;; <RET> follows links
+ '(org-return-follows-link t))
 
 (global-set-key (kbd "C-c a")
                 (lambda () (interactive) (find-file "~/ORG/ARES.org")))
@@ -478,6 +476,7 @@ window dedicated for this buffer."
 
 ;; ESS Package
 (use-package ess-site
+  :ensure ess
   :commands R
   :config
   (use-package ess-R-data-view
@@ -510,22 +509,19 @@ window dedicated for this buffer."
           (lambda () (TeX-fold-mode 1)))    ; Automatically activate TeX-fold-mode.
 (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
 
-(use-package nxml-mode
-  :config
-  (progn
-    (add-to-list 'rng-schema-locating-files
-                 "~/.emacs.d/nxml-schemas/schemas.xml")
-    (add-to-list 'ecb-non-semantic-methods-initial-expand 'nxml-mode)
-    (add-hook 'nxml-mode-hook
-              (lambda ()
-                (set-variable
-                 'imenu-generic-expression
-                 (list
-                  (list
-                   nil
-                   "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
-                (imenu-add-to-menubar "XML")
-                (setq ecb-layout-name "FONETIC-layout")))))
+(add-to-list 'ecb-non-semantic-methods-initial-expand 'nxml-mode)
+(add-hook 'nxml-mode-hook
+          (lambda ()
+            (set-variable
+             'imenu-generic-expression
+             (list
+              (list
+               nil
+               "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
+            (imenu-add-to-menubar "XML")
+            (setq ecb-layout-name "FONETIC-layout")
+              (add-to-list 'rng-schema-locating-files
+             "~/.emacs.d/nxml-schemas/schemas.xml")))
 
 (use-package hideshow
   :config
