@@ -485,8 +485,11 @@ window dedicated for this buffer."
     (define-key ess-mode-map (kbd "C-c v") 'ess-R-dv-ctable)))
 ; Open *.r in R-mode
 (add-to-list 'auto-mode-alist '("\\.r\\'" . R-mode))
+; Expand methods window in ECB at start
+(add-to-list 'ecb-non-semantic-methods-initial-expand 'R-mode)
 ; Make ECB default layout left3
-(add-hook 'R-mode-hook (lambda () (setq ecb-layout-name "left3")))
+(add-hook 'R-mode-hook (lambda ()
+                         (setq ecb-layout-name "left3")))
 
 ;; Force LaTeX mode for .tex files
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . TeX-mode))
@@ -512,6 +515,7 @@ window dedicated for this buffer."
   (progn
     (add-to-list 'rng-schema-locating-files
                  "~/.emacs.d/nxml-schemas/schemas.xml")
+    (add-to-list 'ecb-non-semantic-methods-initial-expand 'nxml-mode)
     (add-hook 'nxml-mode-hook
               (lambda ()
                 (set-variable
@@ -570,6 +574,140 @@ window dedicated for this buffer."
                 "*.aspx"
                 )
               grep-find-ignored-files))
+
+;;; VENTANA JSON
+(defconst ecb-json-buffer-name " *ECB json")
+(defun fonlog-parse-log-tx-result ()
+  "Parsea una región con el resultado de una transacción en JSON."
+  (interactive)
+  (save-mark-and-excursion
+   (setq inhibit-read-only t)
+   (unless (use-region-p)
+     (move-beginning-of-line nil)
+     (search-forward "{\"result\":")
+     (set-mark-command nil)
+     (move-end-of-line nil)
+     (backward-char))
+    (let ((begin (region-beginning))
+          (end (region-end))
+          (jbuf (get-buffer-create ecb-json-buffer-name)))
+      (copy-to-buffer jbuf begin end)
+      (set-buffer jbuf)
+      (json-mode-beautify)
+      (font-lock-fontify-buffer))
+    (setq inhibit-read-only nil)))
+(defecb-window-dedicator-to-ecb-buffer ecb-set-json-buffer
+    ecb-json-buffer-name nil
+  "Hace del buffer actual el buffer json y lo dedica a su ventana."
+  (switch-to-buffer (get-buffer-create ecb-json-buffer-name))
+  (json-mode)
+  (setq buffer-read-only t))
+(ecb-layout-define "FONETIC-log-layout" left
+  "ECB Layout para el modo FONETIC-log."
+  ;; 1. Buffer de métodos
+  (ecb-set-methods-buffer)
+  ;; 2. Divido la barra izquierda en dos
+  (ecb-split-ver 0.7)
+  ;; 3. Buffer de json
+  (ecb-set-json-buffer)
+  ;; 4. Voy a la ventana de edición
+  (select-window (next-window)))
+
+(defvar fonlog-imenu-expressions
+  '(
+    ("GOTO" "\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)\\(goto :#\\)\\(.*\\)" 3)
+    ("TX" "\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)\\(subdialog_start :request:\\)\\(http://[0-9.:]+/.*?/\\)\\(.*?\\)\\(|.*\\)" 4)
+    )
+  "Expresiones regulares para el imenu de log.")
+(defun fonlog-imenu-config ()
+  "Realiza la configuración inicial de imenu para el modo fonlog."
+  (setq-local imenu-generic-expression fonlog-imenu-expressions)
+  (imenu-add-menubar-index))
+(defun fonlog-imenu-rescan ()
+  "Parsea el archivo actual y actualiza imenu y el buffer de métodos de ECB."
+  (interactive)
+  (save-excursion
+    (ecb-select-edit-window)
+    (imenu--menubar-select imenu--rescan-item)
+    (ecb-rebuild-methods-buffer)))
+
+;; Paleta de colores
+(defface fonlog-input-end-face
+  '((t (:background "green" :foreground "black")))
+  "Face para input_end MATCHED."
+  :group 'fonlog)
+(defface fonlog-subdialog-face
+  '((t (:background "pink" :foreground "midnight blue")))
+  "Face para subdialogs."
+  :group 'fonlog)
+(defface fonlog-codifis-face
+  '((t (:background "purple" :foreground "yellow")))
+  "Face para CODIFICACIONES."
+  :group 'fonlog)
+(defface fonlog-log-face
+  '((t (:background "light slate gray" :foreground "lemon chiffon")))
+  "Face para log."
+  :group 'fonlog)
+(defface fonlog-fetch-error-face
+  '((t (:background "red" :foreground "cyan")))
+  "Face para Fetch error."
+  :group 'fonlog)
+
+;; Expresiones regulares
+(defvar fonlog-highlights
+  '(
+    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)input_end MATCHED.*" . 'fonlog-input-end-face)
+    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)subdialog_return.*" . 'fonlog-subdialog-face)
+    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)log CODIFIS:.*" . 'fonlog-codifis-face)
+    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)log .*" . 'fonlog-log-face)
+    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Std [0-9][0-9][0-9][0-9][0-9] EROR\\).*" . 'fonlog-fetch-error-face)
+    )
+  "Expresiones a subrayar para el modo log.")
+
+(defun fonlog-font-lock-config ()
+  "Realiza la configuración inicial de font-lock (subrayado) del modo fonlog."
+  (setq-local font-lock-keywords-only t)                 ; No subrayar strings ni comentarios
+  (setq-local font-lock-defaults '(fonlog-highlights))   ; Configuración de highlight
+  )
+
+(defun fonlog-config-log-buffer ()
+  "Configura el buffer de log para el modo fonlog."
+  ;; Optimización de lectura
+  (setq-local buffer-read-only t)                     ; Modo lectura
+  (setq-local make-backup-files nil)                  ; Sin backup files
+  (setq-local backup-inhibited t)                     ; Inhabilita el backup
+
+  ;; Deshabilitar autoguardado
+  (auto-save-mode -1)
+
+  ;; Configuracion autorevert
+  (setq-local auto-revert-interval 2.0)
+  ;(auto-revert-set-timer)
+  (setq-local auto-revert-remote-files t)
+  (setq-local buffer-stale-function
+              #'(lambda (&optional noconfirm) 'fast))
+
+  ;; Deshabilitar deshacer
+  (buffer-disable-undo)
+
+  (add-to-list 'ecb-non-semantic-methods-initial-expand 'fonlog-mode)
+  (setq ecb-layout-name "FONETIC-log-layout")
+  )
+
+(defun fonlog-config-keys ()
+  "Configura los keybindings para el modo fonlog."
+  (local-set-key (kbd "C-j") 'fonlog-parse-log-tx-result)
+  )
+
+(define-derived-mode fonlog-mode auto-revert-tail-mode "fLog"
+  "Modo mayor de visualización de logs de Fonetic."
+  (fonlog-config-log-buffer)
+  (fonlog-config-keys)
+  (fonlog-imenu-config)
+  (fonlog-font-lock-config)
+  (font-lock-fontify-buffer)
+  )
+(add-to-list 'auto-mode-alist '("\\.log\\'" . fonlog-mode))
 
 (defun my/music-keybindings ()
   "Modify keymap for mpc-mode"
@@ -646,11 +784,6 @@ window dedicated for this buffer."
    ; Fix TLS
   (set-default 'gnutls-trustfiles (cons
                                    "C:/cygwin64/usr/ssl/certs/ca-bundle.trust.crt"
-                                   "C:/cygwin64/usr/ssl/certs/ca-bundle.crt"))
-  ; FIX for cygwin paths
-  (use-package cygwin-mount
-    :config
-    (cygwin-mount-activate))
-  )
+                                   "C:/cygwin64/usr/ssl/certs/ca-bundle.crt")))
 
 
