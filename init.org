@@ -360,13 +360,13 @@ the command. I have it bound to a [[Key%20chords][key-chord]], =jw=.
 
 When in =ace-window= mode, you can change the action with a modifier key:
 
-    - <kbd>x</kbd> - delete window
-    - <kbd>m</kbd> - swap (move) window
-    - <kbd>v</kbd> - split window vertically
-    - <kbd>b</kbd> - split window horizontally
-    - <kbd>n</kbd> - select the previous window
-    - <kbd>i</kbd> - maximize window (select which window)
-    - <kbd>o</kbd> - maximize current window
+| =x= | delete window                         |
+| =m= | swap (move) window                    |
+| =v= | split window vertically               |
+| =b= | split window horizontally             |
+| =n= | select the previous window            |
+| =i= | maximize window (select which window) |
+| =o= | maximize current window               |
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ace-window
