@@ -65,7 +65,8 @@
          ("M-y" . helm-show-kill-ring)
          ("M-x" . helm-M-x)
          ("C-x c o" . helm-occur)
-         ("C-x C-f" . helm-find-files)))
+         ("C-x C-f" . helm-find-files)
+         ("C-x r m" . helm-filtered-bookmarks)))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -176,6 +177,21 @@ Repeated invocations toggle between the two most recently open buffers."
     (key-chord-define-global "jw" 'ace-window)
     (key-chord-define-global "CC" 'mc/edit-lines)))
 
+(use-package bookmark
+  :defer t
+  :config (progn
+            (defun bookmark-find-from-dir-or-default (orig-fun bmk-record)
+              "Around Advice for bookmark-default-handler.  Calls
+             through unless bookmark is a directory, in which
+             case, calls helm-find-file."
+              (let ((file (bookmark-get-filename bmk-record)))
+                (if (file-directory-p file)
+                    (let ((default-directory file))
+                      (call-interactively 'helm-find-files))
+                  (funcall orig-fun bmk-record))))
+            (advice-add `bookmark-default-handler
+                        :around #'bookmark-find-from-dir-or-default)))
+
 (defun my/smarter-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 
@@ -262,7 +278,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package org-pomodoro
   :config
-  (setq org-pomodoro-length 15))
+  (setq org-pomodoro-length 20))
 
 ;; source: http://lebensverrueckt.haktar.org/articles/org-mode-Food/
 (defun food/gen-shopping-list ()

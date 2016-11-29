@@ -134,45 +134,47 @@ To save the scratch buffer contents, I use =persistent-scratch=.
 =Helm= is an incremental completion and selection narrowing framework for Emacs.
 Instead of autocompleting, narrows all possibilities by regexes.
 I replace the following emacs commands with helm equivalents:
-    - M-x
-    - C-x C-f
-    - M-y
-    - C-h a
-    - C-x C-b
-    - C-x c o
+    - =M-x=
+    - =C-x C-f=
+    - =M-y=
+    - =C-h a=
+    - =C-x C-b=
+    - =C-x c o=
+    - =C-x r m=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package helm
-    :diminish helm-mode
-    :init
-    (progn
-      (require 'helm-config)
-      (require 'helm)
-      (global-set-key (kbd "C-c h") 'helm-command-prefix)
-      (global-unset-key (kbd "C-x c"))
-      (setq helm-candidate-number-limit 100
-            helm-idle-delay 0.0
-            helm-input-idle-delay 0.01
-            helm-yas-display-key-on-candidate t
-            helm-quick-update t
-            helm-M-x-requires-pattern nil
-            helm-ff-skip-boring-files t
-            helm-split-window-in-side-p t
-            helm-display-header-line nil
-            helm-autoresize-max-height 30
-            helm-autoresize-min-height 30)
-      (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-      (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-      (define-key helm-map (kbd "C-z")  'helm-select-action)
-      (set-face-attribute 'helm-source-header nil :height 0.1)
-      (helm-mode))
-    :bind (("C-x b" . helm-mini)
-           ("C-h a" . helm-apropos)
-           ("C-x C-b" . helm-buffers-list)
-           ("M-y" . helm-show-kill-ring)
-           ("M-x" . helm-M-x)
-           ("C-x c o" . helm-occur)
-           ("C-x C-f" . helm-find-files)))
+    (use-package helm
+      :diminish helm-mode
+      :init
+      (progn
+        (require 'helm-config)
+        (require 'helm)
+        (global-set-key (kbd "C-c h") 'helm-command-prefix)
+        (global-unset-key (kbd "C-x c"))
+        (setq helm-candidate-number-limit 100
+              helm-idle-delay 0.0
+              helm-input-idle-delay 0.01
+              helm-yas-display-key-on-candidate t
+              helm-quick-update t
+              helm-M-x-requires-pattern nil
+              helm-ff-skip-boring-files t
+              helm-split-window-in-side-p t
+              helm-display-header-line nil
+              helm-autoresize-max-height 30
+              helm-autoresize-min-height 30)
+        (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+        (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+        (define-key helm-map (kbd "C-z")  'helm-select-action)
+        (set-face-attribute 'helm-source-header nil :height 0.1)
+        (helm-mode))
+      :bind (("C-x b" . helm-mini)
+             ("C-h a" . helm-apropos)
+             ("C-x C-b" . helm-buffers-list)
+             ("M-y" . helm-show-kill-ring)
+             ("M-x" . helm-M-x)
+             ("C-x c o" . helm-occur)
+             ("C-x C-f" . helm-find-files)
+             ("C-x r m" . helm-filtered-bookmarks)))
 #+END_SRC
 
 *** Change "yes or no" to "y or n"
@@ -430,6 +432,34 @@ I use the following:
 
 #+END_SRC
 
+*** Bookmarks
+
+Bookmarks are a really nice feature of emacs. It lets you save the
+current point position (no matter if in a file, directory or remote)
+for latter access.
+
+I use helm-bookmark instead of the default to create and jump to
+bookmarks with a single comand, =C-x r m=. As I have a lot of bookmarks
+for directories, I want to find-files there instead of opening a dired
+buffer when jumping to the bookmark.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package bookmark
+    :defer t
+    :config (progn
+              (defun bookmark-find-from-dir-or-default (orig-fun bmk-record)
+                "Around Advice for bookmark-default-handler.  Calls
+               through unless bookmark is a directory, in which
+               case, calls helm-find-file."
+                (let ((file (bookmark-get-filename bmk-record)))
+                  (if (file-directory-p file)
+                      (let ((default-directory file))
+                        (call-interactively 'helm-find-files))
+                    (funcall orig-fun bmk-record))))
+              (advice-add `bookmark-default-handler
+                          :around #'bookmark-find-from-dir-or-default)))
+#+END_SRC
+
 *** Move to beginning of line
 Copied from http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
 
@@ -588,7 +618,7 @@ productive at work. To start a pomodoro, move point to a task and call
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-pomodoro
     :config
-    (setq org-pomodoro-length 15))
+    (setq org-pomodoro-length 20))
 #+END_SRC
 
 *** Cook mode
