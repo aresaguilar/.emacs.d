@@ -721,11 +721,16 @@ window dedicated for this buffer."
   )
 (add-to-list 'auto-mode-alist '("\\.log\\'" . fonlog-mode))
 
-(defun my/music-keybindings ()
-  "Modify keymap for mpc-mode"
-  (local-set-key (kbd "C-c p") 'mpc-play-at-point))
-
-(add-hook 'mpc-mode-hook 'my/music-keybindings)
+(use-package bongo
+  :defer t
+  :config (if (not (eq system-type 'windows-nt))
+              (setq bongo-enabled-backends (quote (vlc)))
+            (setq bongo-enabled-backends (quote (mplayer)))
+            (bongo-backend-put 'mplayer 'file-name-transformers
+              (cons (lambda (file-name)
+                      (when (string-match "^http://.?\\.m3u$" file-name)
+                                          (list file-name "-playlist")))
+                      (bongo-backend-get 'mplayer 'file-name-transformers)))))
 
 (defun runic-write-off ()
   "Stop replacing character with runic ones"
