@@ -91,11 +91,13 @@
 
 (scroll-bar-mode -1)
 
-(use-package smart-mode-line)
-
 (use-package monokai-theme
   :config
   (load-theme 'monokai t))
+
+(use-package smart-mode-line
+  :config
+  (sml/setup))
 
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
@@ -474,7 +476,21 @@ window dedicated for this buffer."
 (yas-global-mode 1)
 
 (use-package company
-  :config (add-hook 'prog-mode-hook 'company-mode))
+  :config (add-hook 'after-init-hook 'global-company-mode))
+
+(use-package company-quickhelp
+  :config (progn
+            (eval-after-load 'company
+              '(define-key company-active-map
+                 (kbd "M-h")
+                 #'company-quickhelp-manual-begin))
+            (company-quickhelp-mode 1)))
+
+(use-package helm-company
+  :config (eval-after-load 'company
+            '(progn
+               (define-key company-mode-map (kbd "C-:") 'helm-company)
+               (define-key company-active-map (kbd "C-:") 'helm-company))))
 
 (use-package "eldoc"
   :diminish eldoc-mode
@@ -729,6 +745,11 @@ window dedicated for this buffer."
             (bongo-backend-put 'mplayer 'file-name-transformers
               (cons (lambda (file-name)
                       (when (string-match "^http://.?\\.m3u$" file-name)
+                                          (list file-name "-playlist")))
+                    (bongo-backend-get 'mplayer 'file-name-transformers)))
+            (bongo-backend-put 'mplayer 'file-name-transformers
+              (cons (lambda (file-name)
+                      (when (string-match "^http://.?\\.pls$" file-name)
                                           (list file-name "-playlist")))
                       (bongo-backend-get 'mplayer 'file-name-transformers)))))
 

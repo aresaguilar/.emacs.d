@@ -46,8 +46,8 @@ automatically):
     - undo-tree
     - use-package
     - yasnippet
-
-
+    - company-quickhelp
+    - helm-company
 If you don't like any of these, just use the tag =:disabled t=
 in =use-package=.
 
@@ -233,14 +233,6 @@ I don't like scrollbars.
 (scroll-bar-mode -1)
 #+END_SRC
 
-*** Modeline
-
-Display a more compact mode line.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package smart-mode-line)
-#+END_SRC
-
 *** Theme
 
 Best theme in Emacs
@@ -249,6 +241,16 @@ Best theme in Emacs
   (use-package monokai-theme
     :config
     (load-theme 'monokai t))
+#+END_SRC
+
+*** Modeline
+
+Display a more compact (and prezi) mode line.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package smart-mode-line
+    :config
+    (sml/setup))
 #+END_SRC
 
 ** Editing text
@@ -566,6 +568,8 @@ Let's start with some general configuration:
    '(org-reverse-note-order t)
    ;; Do not use S-<arrow> (used in windmove)
    '(org-replace-disputed-keys t)
+   ;; Allow using tab to indent in code blocks
+   '(org-src-tab-acts-natively t)
    ;; <RET> follows links
    '(org-return-follows-link t))
 #+END_SRC
@@ -907,11 +911,40 @@ Snippets are stored at =~/.emacs.d/snippets=
   (yas-global-mode 1)
 #+END_SRC
 
-*** Autocomplete
+*** Autocompletion
+
+I use company-mode for completion.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
-    :config (add-hook 'prog-mode-hook 'company-mode))
+    :config (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
+
+But I loved the way auto-complete displayed the documentation in a
+pop-up. Fortunately, we have company-help to do the same thing, that
+can be triggered from company with the keybinding =M-h=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-quickhelp
+    :config (progn
+              (eval-after-load 'company
+                '(define-key company-active-map
+                   (kbd "M-h")
+                   #'company-quickhelp-manual-begin))
+              (company-quickhelp-mode 1)))
+#+END_SRC
+
+Finally, I love Helm (you may have noticed that). So let's bound
+=helm-company= to =C-:= when in company-mode.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package helm-company
+    :config (eval-after-load 'company
+              '(progn
+                 (define-key company-mode-map (kbd "C-:") 'helm-company)
+                 (define-key company-active-map (kbd "C-:") 'helm-company))))
+#+END_SRC
+
 
 *** Emacs Lisp
 
