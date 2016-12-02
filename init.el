@@ -177,6 +177,7 @@ Repeated invocations toggle between the two most recently open buffers."
     (key-chord-define-global "jk" 'avy-goto-char)
     (key-chord-define-global "jl" 'avy-goto-word-or-subword-1)
     (key-chord-define-global "jw" 'ace-window)
+    (key-chord-define-global "gg" 'avy-goto-line)
     (key-chord-define-global "CC" 'mc/edit-lines)))
 
 (use-package bookmark
@@ -251,8 +252,6 @@ point reaches the beginning or end of the buffer, stop there."
  '(org-agenda-skip-scheduled-if-done t)
  ;; Show newest notes at top
  '(org-reverse-note-order t)
- ;; Do not use S-<arrow> (used in windmove)
- '(org-replace-disputed-keys t)
  ;; Allow using tab to indent in code blocks
  '(org-src-tab-acts-natively t)
  ;; <RET> follows links
@@ -391,12 +390,10 @@ point reaches the beginning or end of the buffer, stop there."
   (my-global-fci-mode 1))
 
 (use-package magit
-  :config
-  (global-set-key (kbd "C-x g") 'magit-status))
+  :bind ("C-c g" . magit-status))
 
 (use-package monky
-  :config
-  (global-set-key (kbd "C-x G") 'monky-status))
+  :bind ("C-c G" . monky-status))
 
 (setq path-to-ctags "ctags")
 (defun create-tags (dir-name)
@@ -754,6 +751,7 @@ window dedicated for this buffer."
 
 (use-package bongo
   :defer t
+  :bind ("C-c b" . bongo)
   :config (if (not (eq system-type 'windows-nt))
               (setq bongo-enabled-backends (quote (vlc)))
             (setq bongo-enabled-backends (quote (mplayer)))
@@ -766,7 +764,7 @@ window dedicated for this buffer."
               (cons (lambda (file-name)
                       (when (string-match "^http://.?\\.pls$" file-name)
                                           (list file-name "-playlist")))
-                      (bongo-backend-get 'mplayer 'file-name-transformers)))))
+                    (bongo-backend-get 'mplayer 'file-name-transformers)))))
 
 (defun runic-write-off ()
   "Stop replacing character with runic ones"

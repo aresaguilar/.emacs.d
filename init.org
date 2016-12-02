@@ -417,6 +417,7 @@ I use the following:
 | jw | ace-window               |
 | jl | avy-goto-word-or-subword |
 | CC | multiple cursors         |
+| gg | avy-goto-line            |
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package key-chord
@@ -430,8 +431,8 @@ I use the following:
       (key-chord-define-global "jk" 'avy-goto-char)
       (key-chord-define-global "jl" 'avy-goto-word-or-subword-1)
       (key-chord-define-global "jw" 'ace-window)
+      (key-chord-define-global "gg" 'avy-goto-line)
       (key-chord-define-global "CC" 'mc/edit-lines)))
-
 #+END_SRC
 
 *** Bookmarks
@@ -566,8 +567,6 @@ Let's start with some general configuration:
    '(org-agenda-skip-scheduled-if-done t)
    ;; Show newest notes at top
    '(org-reverse-note-order t)
-   ;; Do not use S-<arrow> (used in windmove)
-   '(org-replace-disputed-keys t)
    ;; Allow using tab to indent in code blocks
    '(org-src-tab-acts-natively t)
    ;; <RET> follows links
@@ -772,8 +771,7 @@ I have to use =l l= to see the short log.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package magit
-    :config
-    (global-set-key (kbd "C-x g") 'magit-status))
+    :bind ("C-c g" . magit-status))
 #+END_SRC
 
 **** Monky
@@ -783,8 +781,7 @@ Monky is like Magit for HG. I use =monky-status= with the keybinding
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package monky
-    :config
-    (global-set-key (kbd "C-x G") 'monky-status))
+    :bind ("C-c G" . monky-status))
 #+END_SRC
 
 *** CTAGS
@@ -948,7 +945,6 @@ good old narrowing.
                  (define-key company-mode-map (kbd "C-:") 'helm-company)
                  (define-key company-active-map (kbd "C-:") 'helm-company))))
 #+END_SRC
-
 
 *** Emacs Lisp
 
@@ -1297,6 +1293,7 @@ which has a bug in bongo when dealing with online radios in .m3u
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package bongo
     :defer t
+    :bind ("C-c b" . bongo)
     :config (if (not (eq system-type 'windows-nt))
                 (setq bongo-enabled-backends (quote (vlc)))
               (setq bongo-enabled-backends (quote (mplayer)))
@@ -1309,7 +1306,7 @@ which has a bug in bongo when dealing with online radios in .m3u
                 (cons (lambda (file-name)
                         (when (string-match "^http://.?\\.pls$" file-name)
                                             (list file-name "-playlist")))
-                        (bongo-backend-get 'mplayer 'file-name-transformers)))))
+                      (bongo-backend-get 'mplayer 'file-name-transformers)))))
 #+END_SRC
 
 *** Runic
