@@ -14,10 +14,11 @@ url/**
 .mc-lists.el
 
 custom-settings.el
-custom-settings.el.before_ecb_2.50
 projectile.cache
 projectile-bookmarks.eld
 recentf
 savehist
 bookmarks
 TAGS
+
+*.bongo-library

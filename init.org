@@ -917,7 +917,10 @@ I use company-mode for completion.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
-    :config (add-hook 'after-init-hook 'global-company-mode))
+    :config (progn
+              (setq company-idle-delay 0.5)
+              (setq company-minimum-prefix-length 2)
+              (global-company-mode 1)))
 #+END_SRC
 
 But I loved the way auto-complete displayed the documentation in a
@@ -935,7 +938,8 @@ can be triggered from company with the keybinding =M-h=.
 #+END_SRC
 
 Finally, I love Helm (you may have noticed that). So let's bound
-=helm-company= to =C-:= when in company-mode.
+=helm-company= to =C-:= when in company-mode just in case we need some
+good old narrowing.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package helm-company
@@ -1024,6 +1028,14 @@ Configuration related to LaTeX
 (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
 #+END_SRC
 
+And autocompletion.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-auctex
+    :defer t
+    :config (company-auctex-init))
+#+END_SRC
+
 *** VXML
 
 VoiceXML isn't supported in emacs, so I will expand =nxml-mode= with
@@ -1032,19 +1044,25 @@ proper syntax.
 First, lets add =<form>= ids to the imenu bar and set up ECB layout.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (add-to-list 'ecb-non-semantic-methods-initial-expand 'nxml-mode)
-    (add-hook 'nxml-mode-hook
-              (lambda ()
-                (set-variable
-                 'imenu-generic-expression
-                 (list
-                  (list
-                   nil
-                   "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
-                (imenu-add-to-menubar "XML")
-                (setq ecb-layout-name "FONETIC-layout")
-                  (add-to-list 'rng-schema-locating-files
-                 "~/.emacs.d/nxml-schemas/schemas.xml")))
+  (add-to-list 'ecb-non-semantic-methods-initial-expand 'nxml-mode)
+  (add-hook 'nxml-mode-hook
+            (lambda ()
+              (set-variable
+               'imenu-generic-expression
+               (list
+                (list
+                 nil
+                 "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
+              (imenu-add-to-menubar "XML")
+              (setq ecb-layout-name "FONETIC-layout")
+              (add-to-list 'rng-schema-locating-files
+                           "~/.emacs.d/nxml-schemas/schemas.xml")
+              
+              (setq nxml-child-indent 4)
+              (setq nxml-attribute-indent 4)
+              (setq nxml-auto-insert-xml-declaration-flag nil)
+              (setq nxml-bind-meta-tab-to-complete-flag t)
+              (setq nxml-slash-auto-complete-flag t)))
 #+END_SRC
 
 Then we set up the schema files and hideshow mode. This way I can hide

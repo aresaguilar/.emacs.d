@@ -253,6 +253,8 @@ point reaches the beginning or end of the buffer, stop there."
  '(org-reverse-note-order t)
  ;; Do not use S-<arrow> (used in windmove)
  '(org-replace-disputed-keys t)
+ ;; Allow using tab to indent in code blocks
+ '(org-src-tab-acts-natively t)
  ;; <RET> follows links
  '(org-return-follows-link t))
 
@@ -476,7 +478,10 @@ window dedicated for this buffer."
 (yas-global-mode 1)
 
 (use-package company
-  :config (add-hook 'after-init-hook 'global-company-mode))
+  :config (progn
+            (setq company-idle-delay 0.5)
+            (setq company-minimum-prefix-length 2)
+            (global-company-mode 1)))
 
 (use-package company-quickhelp
   :config (progn
@@ -541,6 +546,10 @@ window dedicated for this buffer."
           (lambda () (TeX-fold-mode 1)))    ; Automatically activate TeX-fold-mode.
 (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
 
+(use-package company-auctex
+  :defer t
+  :config (company-auctex-init))
+
 (add-to-list 'ecb-non-semantic-methods-initial-expand 'nxml-mode)
 (add-hook 'nxml-mode-hook
           (lambda ()
@@ -552,8 +561,14 @@ window dedicated for this buffer."
                "\\(<form id=\"\\)\\([A-Za-z0-9_]+\.\\)?\\([A-Za-z0-9\._]+\\)\\(\">\\)" 3)))
             (imenu-add-to-menubar "XML")
             (setq ecb-layout-name "FONETIC-layout")
-              (add-to-list 'rng-schema-locating-files
-             "~/.emacs.d/nxml-schemas/schemas.xml")))
+            (add-to-list 'rng-schema-locating-files
+                         "~/.emacs.d/nxml-schemas/schemas.xml")
+            
+            (setq nxml-child-indent 4)
+            (setq nxml-attribute-indent 4)
+            (setq nxml-auto-insert-xml-declaration-flag nil)
+            (setq nxml-bind-meta-tab-to-complete-flag t)
+            (setq nxml-slash-auto-complete-flag t)))
 
 (use-package hideshow
   :config
