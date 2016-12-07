@@ -1,0 +1,26 @@
+# -*- mode: snippet -*-
+# name: Form Prompt
+# key: formprompt
+# --
+<form id="$1">
+    <var name="formName" expr="'$1'"/>
+    <script>Traza.IniBloque(formName)</script>
+    <property name="inputmodes" value="voice dtmf" />
+    <property name="bargein" value="false" />
+    <property name="timeout" value="0s" />
+    <field modal="false"> 
+        <prompt>
+            <audio expr="getPrompt(formName)">
+                  $2
+            </audio>
+        </prompt>
+        <grammar mode="dtmf" srcexpr="getNevermatchGrammar()"/>
+        <filled>
+           <throw event="nomatch"/>
+        </filled>
+        <catch event="nomatch noinput">
+           <script>Traza.FinBloque('na', 0, 0, 0, 'pob')</script>
+           <goto next="$0" />
+        </catch>
+    </field>
+</form>
