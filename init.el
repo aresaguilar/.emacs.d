@@ -1,13 +1,21 @@
 
 (package-initialize)
+
+;; Disable some messages
 (setq package-enable-at-startup nil)
+(setq ad-redefinition-action 'accept)
+(setq ad-redefinition-action 'accept)
+
+;; Set custom file
 (setq custom-file "~/.emacs.d/custom-settings.el")
 (load custom-file t)
+
+;; Add Melpa repo if not present
 (unless (assoc-default "melpa" package-archives)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
   (package-refresh-contents)
 )
-(setq inhibit-startup-screen t)
+
 ;; Always try to install a package if not present
 (setq use-package-always-ensure t)
 
@@ -693,22 +701,18 @@ window dedicated for this buffer."
   "Face para Fetch error."
   :group 'fonlog)
 
-;; Expresiones regulares
-(defvar fonlog-highlights
-  '(
-    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)input_end MATCHED.*" . 'fonlog-input-end-face)
-    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)subdialog_return.*" . 'fonlog-subdialog-face)
-    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)log CODIFIS:.*" . 'fonlog-codifis-face)
-    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)log .*" . 'fonlog-log-face)
-    ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Std [0-9][0-9][0-9][0-9][0-9] EROR\\).*" . 'fonlog-fetch-error-face)
-    )
-  "Expresiones a subrayar para el modo log.")
-
 (defun fonlog-font-lock-config ()
   "Realiza la configuración inicial de font-lock (subrayado) del modo fonlog."
-  (setq-local font-lock-defaults '(fonlog-highlights))   ; Configuración de highlight
-  (setq font-lock-keywords-only t)                 ; No subrayar strings ni comentarios
-  )
+  (set (make-local-variable 'font-lock-defaults)
+              '((
+                ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)input_end MATCHED.*" . 'fonlog-input-end-face)
+                ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)subdialog_return.*" . 'fonlog-subdialog-face)
+                ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)log CODIFIS:.*" . 'fonlog-codifis-face)
+                ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Int [0-9][0-9][0-9][0-9][0-9] [0-9a-fA-F]\\{8\\}-[0-9a-fA-F]\\{8\\} [0-9]+ \\)log .*" . 'fonlog-log-face)
+                ("\\(^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]\\.[0-9][0-9][0-9] Std [0-9][0-9][0-9][0-9][0-9] EROR\\).*" . 'fonlog-fetch-error-face)
+                )   ; Configuración de highlight
+                t)  ; No subrayar strings y comentarios
+  ))
 
 (defun fonlog-config-log-buffer ()
   "Configura el buffer de log para el modo fonlog."
