@@ -237,7 +237,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 (define-key key-translation-map [dead-circumflex] "^")
 
-(setq browse-url-browser-function 'w3m-browse-url)
+(use-package w3m
+  :init
+  (setq browse-url-browser-function 'w3m-browse-url))
 
 (setq org-directory "~/ORG")
 
@@ -538,7 +540,7 @@ window dedicated for this buffer."
 ;; RefTeX loading
 (add-hook 'TeX-mode-hook 'turn-on-reftex) ; Activar reftex con AucTeX
 (setq reftex-plug-into-AUCTeX t)            ; Conectar a AUC TeX con RefTeX
-(setq TeX-default-mode '"latex-mode")       ; Modo ordinario para ficheros .tex
+(setq TeX-default-mode '"LaTeX-mode")       ; Modo ordinario para ficheros .tex
 (setq TeX-force-default-mode t)             ; Activar siempre dicho modo.
 
 ;; TeX settings
@@ -554,6 +556,16 @@ window dedicated for this buffer."
 (use-package company-auctex
   :defer t
   :config (company-auctex-init))
+
+(use-package org-ref
+    :defer t
+    )
+(setq org-latex-pdf-process
+       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %b"
+         "bibtex %b"
+         "makeindex %b"
+         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %b"
+         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %b"))
 
 (add-to-list 'ecb-non-semantic-methods-initial-expand 'nxml-mode)
 (add-hook 'nxml-mode-hook
